@@ -8,34 +8,60 @@ export interface JobsSearch {
   location?: string;
   savedOnly?: boolean;
   remoteOnly?: boolean;
+  minSalary?: number;
+  currency?: string;
 }
+
+const validateStringParameter = (value: unknown): string | undefined => {
+  return value !== undefined && value !== null ? value.toString() : undefined;
+};
+
+const validateBooleanParameter = (value: unknown): boolean | undefined => {
+  return value !== undefined && value !== null
+    ? value === 'true' || value === true
+    : undefined;
+};
+
+const validateNumberParameter = (value: unknown): number | undefined => {
+  if (value === undefined || value === null) return undefined;
+  const number_ = parseInt(value.toString(), 10);
+  return !isNaN(number_) && number_ > 0 ? number_ : undefined;
+};
+
+const validateCurrencyParameter = (value: unknown): string | undefined => {
+  const currency = validateStringParameter(value);
+  // Validate against supported currencies
+  const supportedCurrencies = ['USD', 'EUR', 'GBP', 'CAD', 'AUD'];
+  return currency && supportedCurrencies.includes(currency)
+    ? currency
+    : undefined;
+};
 
 export const Route = createFileRoute('/jobs')({
   validateSearch: (search: Record<string, unknown>): JobsSearch => {
     // Only include params that are actually present in the URL
     const result: JobsSearch = {};
 
-    if (search.search !== undefined && search.search !== null) {
-      result.search = search.search.toString();
-    }
+    const searchParameter = validateStringParameter(search.search);
+    if (searchParameter) result.search = searchParameter;
 
-    if (search.tag !== undefined && search.tag !== null) {
-      result.tag = search.tag.toString();
-    }
+    const tagParameter = validateStringParameter(search.tag);
+    if (tagParameter) result.tag = tagParameter;
 
-    if (search.location !== undefined && search.location !== null) {
-      result.location = search.location.toString();
-    }
+    const locationParameter = validateStringParameter(search.location);
+    if (locationParameter) result.location = locationParameter;
 
-    if (search.savedOnly !== undefined && search.savedOnly !== null) {
-      result.savedOnly =
-        search.savedOnly === 'true' || search.savedOnly === true;
-    }
+    const savedOnlyParameter = validateBooleanParameter(search.savedOnly);
+    if (savedOnlyParameter) result.savedOnly = savedOnlyParameter;
 
-    if (search.remoteOnly !== undefined && search.remoteOnly !== null) {
-      result.remoteOnly =
-        search.remoteOnly === 'true' || search.remoteOnly === true;
-    }
+    const remoteOnlyParameter = validateBooleanParameter(search.remoteOnly);
+    if (remoteOnlyParameter) result.remoteOnly = remoteOnlyParameter;
+
+    const minSalaryParameter = validateNumberParameter(search.minSalary);
+    if (minSalaryParameter) result.minSalary = minSalaryParameter;
+
+    const currencyParameter = validateCurrencyParameter(search.currency);
+    if (currencyParameter) result.currency = currencyParameter;
 
     return result;
   },

@@ -1,4 +1,4 @@
-import { Search, MapPin, Tag, Laptop } from 'lucide-react';
+import { Search, MapPin, Tag, Laptop, DollarSign } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -10,6 +10,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormDescription,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
@@ -19,6 +20,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useCurrencyConversion } from '@/hooks/use-currency-conversion';
+
+import { CurrencySelector, SUPPORTED_CURRENCIES } from './currency-selector';
 
 import type { Job } from '@/types/job';
 
@@ -34,6 +38,8 @@ export interface JobFilters {
   location: string;
   savedOnly: boolean;
   remoteOnly: boolean;
+  minSalary?: number;
+  currency: string;
 }
 
 export const JobFilters = ({
@@ -46,6 +52,13 @@ export const JobFilters = ({
   });
 
   const formValues = form.watch();
+  const selectedCurrency = form.watch('currency');
+  const {
+    convert,
+    isLoading: currencyLoading,
+    error: currencyError,
+    lastUpdated,
+  } = useCurrencyConversion();
 
   // Only update parent when form values actually change from user interaction
   useEffect(() => {
@@ -55,7 +68,9 @@ export const JobFilters = ({
       formValues.tag !== currentFilters.tag ||
       formValues.location !== currentFilters.location ||
       formValues.savedOnly !== currentFilters.savedOnly ||
-      formValues.remoteOnly !== currentFilters.remoteOnly;
+      formValues.remoteOnly !== currentFilters.remoteOnly ||
+      formValues.minSalary !== currentFilters.minSalary ||
+      formValues.currency !== currentFilters.currency;
 
     if (hasChanged) {
       onFiltersChange(formValues);
@@ -78,6 +93,49 @@ export const JobFilters = ({
     [jobs],
   );
 
+  // Calculate salary range suggestions based on current jobs and selected currency
+  const salaryRangeInfo = useMemo(() => {
+    const salariesInSelectedCurrency = jobs
+      .filter((job) => job.salaryRange)
+      .map((job) => {
+        const minConverted = convert(
+          job.salaryRange!.min,
+          job.salaryRange!.currency!,
+          selectedCurrency,
+        );
+        const maxConverted = convert(
+          job.salaryRange!.max,
+          job.salaryRange!.currency!,
+          selectedCurrency,
+        );
+        return { min: minConverted, max: maxConverted };
+      });
+
+    if (salariesInSelectedCurrency.length === 0) {
+      return { min: 0, max: 0, count: 0 };
+    }
+
+    const allSalaries = salariesInSelectedCurrency.flatMap((range) => [
+      range.min,
+      range.max,
+    ]);
+    const min = Math.min(...allSalaries);
+    const max = Math.max(...allSalaries);
+
+    return {
+      min: Math.floor(min / 1000) * 1000, // Round down to nearest 1k
+      max: Math.ceil(max / 1000) * 1000, // Round up to nearest 1k
+      count: salariesInSelectedCurrency.length,
+    };
+  }, [jobs, selectedCurrency, convert]);
+
+  const getCurrencySymbol = (currencyCode: string) => {
+    return (
+      SUPPORTED_CURRENCIES.find((c) => c.code === currencyCode)?.symbol ||
+      currencyCode
+    );
+  };
+
   const handleClearFilters = () => {
     const clearedFilters = {
       search: '',
@@ -85,6 +143,8 @@ export const JobFilters = ({
       location: 'all',
       savedOnly: false,
       remoteOnly: false,
+      minSalary: undefined,
+      currency: 'USD',
     };
     form.reset(clearedFilters);
     onFiltersChange(clearedFilters);
@@ -179,6 +239,61 @@ export const JobFilters = ({
           />
         </div>
 
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="currency"
+            render={({ field }) => (
+              <CurrencySelector
+                value={field.value}
+                onValueChange={field.onChange}
+                disabled={currencyLoading}
+              />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="minSalary"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex items-center gap-2">
+                  <DollarSign
+                    className="h-4 w-4 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                  Minimum Salary
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder={`e.g., ${getCurrencySymbol(selectedCurrency)}${salaryRangeInfo.min.toLocaleString()}`}
+                    {...field}
+                    value={field.value || ''}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      field.onChange(value ? parseInt(value, 10) : undefined);
+                    }}
+                  />
+                </FormControl>
+                {salaryRangeInfo.count > 0 && (
+                  <FormDescription>
+                    Available range: {getCurrencySymbol(selectedCurrency)}
+                    {salaryRangeInfo.min.toLocaleString()} -{' '}
+                    {getCurrencySymbol(selectedCurrency)}
+                    {salaryRangeInfo.max.toLocaleString()}
+                  </FormDescription>
+                )}
+                {currencyError && (
+                  <FormDescription className="text-destructive">
+                    ⚠️ Using offline exchange rates
+                  </FormDescription>
+                )}
+              </FormItem>
+            )}
+          />
+        </div>
+
         <div className="space-y-4">
           <FormField
             control={form.control}
@@ -229,7 +344,14 @@ export const JobFilters = ({
           />
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-between items-center">
+          <div className="text-xs text-muted-foreground">
+            {lastUpdated && (
+              <span>
+                Exchange rates updated: {lastUpdated.toLocaleTimeString()}
+              </span>
+            )}
+          </div>
           <Button variant="outline" onClick={handleClearFilters}>
             Clear filters
           </Button>
