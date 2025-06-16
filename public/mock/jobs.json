@@ -2,48 +2,288 @@
   "jobs": [
     {
       "id": "job-1",
-      "title": "Senior Frontend Developer",
-      "company": "TechCorp",
-      "location": "San Francisco, CA (Remote)",
-      "description": "We're looking for a Senior Frontend Developer to join our team and help build the next generation of web applications.",
-      "tags": ["React", "TypeScript", "Tailwind", "Remote"],
-      "applyUrl": "https://techcorp.com/careers/senior-frontend"
+      "title": "Senior Frontend Engineer",
+      "company": "TechNova",
+      "location": "Remote",
+      "description": "We're hiring a Senior Frontend Engineer at TechNova. Join us to build something great.",
+      "tags": [
+        "React",
+        "TypeScript",
+        "Remote"
+      ],
+      "applyUrl": "https://technova.com/careers/senior-frontend-engineer",
+      "salaryRange": {
+        "min": 83021,
+        "max": 95782,
+        "currency": "USD"
+      },
+      "remote": true
     },
     {
       "id": "job-2",
-      "title": "Full Stack Engineer",
-      "company": "StartupX",
+      "title": "Backend Developer",
+      "company": "CloudCore",
       "location": "New York, NY",
-      "description": "Join our fast-growing startup as a Full Stack Engineer and help shape our product from the ground up.",
-      "tags": ["Node.js", "React", "PostgreSQL", "AWS"],
-      "applyUrl": "https://startupx.com/jobs/full-stack"
+      "description": "We're hiring a Backend Developer at CloudCore. Join us to build something great.",
+      "tags": [
+        "Node.js",
+        "API",
+        "PostgreSQL"
+      ],
+      "applyUrl": "https://cloudcore.com/careers/backend-developer",
+      "salaryRange": {
+        "min": 84925,
+        "max": 105599,
+        "currency": "USD"
+      },
+      "remote": false
     },
     {
       "id": "job-3",
-      "title": "Frontend Developer",
-      "company": "DesignCo",
-      "location": "London, UK (Hybrid)",
-      "description": "We're seeking a Frontend Developer with a keen eye for design and a passion for creating beautiful user interfaces.",
-      "tags": ["Vue.js", "CSS", "Design Systems", "Hybrid"],
-      "applyUrl": "https://designco.com/careers/frontend"
+      "title": "UI/UX Designer",
+      "company": "Creative Labs",
+      "location": "London, UK",
+      "description": "We're hiring a UI/UX Designer at Creative Labs. Join us to build something great.",
+      "tags": [
+        "Figma",
+        "UX",
+        "UI"
+      ],
+      "applyUrl": "https://creativelabs.com/careers/ui/ux-designer",
+      "salaryRange": {
+        "min": 70476,
+        "max": 82249,
+        "currency": "GBP"
+      },
+      "remote": false
     },
     {
       "id": "job-4",
-      "title": "React Developer",
-      "company": "FinTech Solutions",
-      "location": "Remote",
-      "description": "Join our fintech team to build secure and performant financial applications using React and TypeScript.",
-      "tags": ["React", "TypeScript", "Finance", "Remote"],
-      "applyUrl": "https://fintech-solutions.com/jobs/react"
+      "title": "Full Stack Engineer",
+      "company": "DesignSprint",
+      "location": "Berlin, Germany",
+      "description": "We're hiring a Full Stack Engineer at DesignSprint. Join us to build something great.",
+      "tags": [
+        "AWS",
+        "Terraform",
+        "CI/CD"
+      ],
+      "applyUrl": "https://designsprint.com/careers/full-stack-engineer",
+      "salaryRange": {
+        "min": 77613,
+        "max": 107316,
+        "currency": "EUR"
+      },
+      "remote": false
     },
     {
       "id": "job-5",
-      "title": "UI/UX Developer",
-      "company": "Creative Labs",
+      "title": "DevOps Specialist",
+      "company": "OpsGenie",
+      "location": "Toronto, Canada",
+      "description": "We're hiring a DevOps Specialist at OpsGenie. Join us to build something great.",
+      "tags": [
+        "Python",
+        "Data",
+        "Pandas"
+      ],
+      "applyUrl": "https://opsgenie.com/careers/devops-specialist",
+      "salaryRange": {
+        "min": 70815,
+        "max": 95236,
+        "currency": "EUR"
+      },
+      "remote": false
+    },
+    {
+      "id": "job-6",
+      "title": "QA Automation Engineer",
+      "company": "MobileVerse",
+      "location": "San Francisco, CA",
+      "description": "We're hiring a QA Automation Engineer at MobileVerse. Join us to build something great.",
+      "tags": [
+        "Kubernetes",
+        "Docker",
+        "GCP"
+      ],
+      "applyUrl": "https://mobileverse.com/careers/qa-automation-engineer",
+      "salaryRange": {
+        "min": 88584,
+        "max": 116111,
+        "currency": "USD"
+      },
+      "remote": false
+    },
+    {
+      "id": "job-7",
+      "title": "Mobile Developer",
+      "company": "DataSense",
+      "location": "Amsterdam, Netherlands",
+      "description": "We're hiring a Mobile Developer at DataSense. Join us to build something great.",
+      "tags": [
+        "Swift",
+        "iOS",
+        "Xcode"
+      ],
+      "applyUrl": "https://datasense.com/careers/mobile-developer",
+      "salaryRange": {
+        "min": 73571,
+        "max": 84839,
+        "currency": "EUR"
+      },
+      "remote": false
+    },
+    {
+      "id": "job-8",
+      "title": "Data Analyst",
+      "company": "ProdMaster",
+      "location": "Sydney, Australia",
+      "description": "We're hiring a Data Analyst at ProdMaster. Join us to build something great.",
+      "tags": [
+        "Android",
+        "Kotlin",
+        "Mobile"
+      ],
+      "applyUrl": "https://prodmaster.com/careers/data-analyst",
+      "salaryRange": {
+        "min": 87176,
+        "max": 108078,
+        "currency": "EUR"
+      },
+      "remote": false
+    },
+    {
+      "id": "job-9",
+      "title": "Product Manager",
+      "company": "AIWorks",
+      "location": "Dublin, Ireland",
+      "description": "We're hiring a Product Manager at AIWorks. Join us to build something great.",
+      "tags": [
+        "Security",
+        "PenTest",
+        "OAuth"
+      ],
+      "applyUrl": "https://aiworks.com/careers/product-manager",
+      "salaryRange": {
+        "min": 83407,
+        "max": 93885,
+        "currency": "EUR"
+      },
+      "remote": false
+    },
+    {
+      "id": "job-10",
+      "title": "Machine Learning Engineer",
+      "company": "SecureStack",
+      "location": "Remote",
+      "description": "We're hiring a Machine Learning Engineer at SecureStack. Join us to build something great.",
+      "tags": [
+        "C#",
+        "Unity",
+        "GameDev"
+      ],
+      "applyUrl": "https://securestack.com/careers/machine-learning-engineer",
+      "salaryRange": {
+        "min": 88606,
+        "max": 110245,
+        "currency": "USD"
+      },
+      "remote": true
+    },
+    {
+      "id": "job-11",
+      "title": "Cloud Architect",
+      "company": "PixelForge",
+      "location": "New York, NY",
+      "description": "We're hiring a Cloud Architect at PixelForge. Join us to build something great.",
+      "tags": [
+        "Markdown",
+        "Docs",
+        "Git"
+      ],
+      "applyUrl": "https://pixelforge.com/careers/cloud-architect",
+      "salaryRange": {
+        "min": 78436,
+        "max": 105744,
+        "currency": "USD"
+      },
+      "remote": false
+    },
+    {
+      "id": "job-12",
+      "title": "Security Engineer",
+      "company": "DocuSoft",
+      "location": "London, UK",
+      "description": "We're hiring a Security Engineer at DocuSoft. Join us to build something great.",
+      "tags": [
+        "Next.js",
+        "Tailwind",
+        "SSR"
+      ],
+      "applyUrl": "https://docusoft.com/careers/security-engineer",
+      "salaryRange": {
+        "min": 74327,
+        "max": 96130,
+        "currency": "GBP"
+      },
+      "remote": false
+    },
+    {
+      "id": "job-13",
+      "title": "Game Developer",
+      "company": "SkyNetics",
       "location": "Berlin, Germany",
-      "description": "We're looking for a UI/UX Developer who can bridge the gap between design and development.",
-      "tags": ["React", "Framer Motion", "Design", "UI/UX"],
-      "applyUrl": "https://creativelabs.com/careers/ui-ux"
+      "description": "We're hiring a Game Developer at SkyNetics. Join us to build something great.",
+      "tags": [
+        "React",
+        "TypeScript",
+        "Remote"
+      ],
+      "applyUrl": "https://skynetics.com/careers/game-developer",
+      "salaryRange": {
+        "min": 75212,
+        "max": 95550,
+        "currency": "EUR"
+      },
+      "remote": true
+    },
+    {
+      "id": "job-14",
+      "title": "Technical Writer",
+      "company": "TechNova",
+      "location": "Toronto, Canada",
+      "description": "We're hiring a Technical Writer at TechNova. Join us to build something great.",
+      "tags": [
+        "Node.js",
+        "API",
+        "PostgreSQL"
+      ],
+      "applyUrl": "https://technova.com/careers/technical-writer",
+      "salaryRange": {
+        "min": 84041,
+        "max": 105269,
+        "currency": "EUR"
+      },
+      "remote": false
+    },
+    {
+      "id": "job-15",
+      "title": "Solutions Architect",
+      "company": "CloudCore",
+      "location": "San Francisco, CA",
+      "description": "We're hiring a Solutions Architect at CloudCore. Join us to build something great.",
+      "tags": [
+        "Figma",
+        "UX",
+        "UI"
+      ],
+      "applyUrl": "https://cloudcore.com/careers/solutions-architect",
+      "salaryRange": {
+        "min": 71095,
+        "max": 91957,
+        "currency": "USD"
+      },
+      "remote": false
     }
   ]
 }

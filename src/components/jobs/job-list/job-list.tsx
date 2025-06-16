@@ -22,6 +22,9 @@ export const JobList = () => {
     tag: search?.tag || 'all',
     location: search?.location || 'all',
     savedOnly: search?.savedOnly || false,
+    remoteOnly: search?.remoteOnly || false,
+    minSalary: search?.minSalary,
+    currency: search?.currency || 'USD',
   };
 
   const filteredJobs = useFilteredJobs(jobs || [], currentFilters, savedIds);
@@ -44,6 +47,18 @@ export const JobList = () => {
 
     if (newFilters.savedOnly) {
       searchParameters.savedOnly = newFilters.savedOnly;
+    }
+
+    if (newFilters.remoteOnly) {
+      searchParameters.remoteOnly = newFilters.remoteOnly;
+    }
+
+    if (newFilters.minSalary && newFilters.minSalary > 0) {
+      searchParameters.minSalary = newFilters.minSalary;
+    }
+
+    if (newFilters.currency && newFilters.currency !== 'USD') {
+      searchParameters.currency = newFilters.currency;
     }
 
     navigate({
@@ -73,6 +88,7 @@ export const JobList = () => {
             key={job.id}
             job={job}
             searchHighlight={search?.search || ''}
+            preferredCurrency={currentFilters.currency}
           />
         ))}
       </div>
