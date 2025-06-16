@@ -1,36 +1,74 @@
-import { useRouter } from '@tanstack/react-router';
-import { AnimatePresence } from 'motion/react';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 
-import { MotionWrapper } from '@/components/common/motion-wrapper/motion-wrapper';
-import { JobCard } from '@/components/jobs/job-card/job-card';
-import { JobDetailsModal } from '@/components/jobs/job-details-modal/job-details-modal';
-import { useJobs } from '@/hooks/useJobs';
+import { useFilteredJobs } from '@/hooks/use-filtered-jobs';
+import { useJobs } from '@/hooks/use-jobs';
 
-import { JobListStates } from './job-list-states';
+import { JobCard } from '../job-card/job-card';
+import {
+  JobFilters,
+  type JobFilters as JobFiltersType,
+} from '../job-filters/job-filters';
 
 export const JobList = () => {
-  const router = useRouter();
+  const navigate = useNavigate({ from: '/jobs' });
+  const search = useSearch({ from: '/jobs' });
   const { data: jobs, isLoading, error } = useJobs();
-  const jobId = router.state.location.pathname.split('/').pop();
 
-  if (isLoading || error) {
-    return <JobListStates isLoading={isLoading} error={error} jobs={jobs} />;
+  // Provide defaults for optional search parameters
+  const currentFilters = {
+    search: search?.search || '',
+    tag: search?.tag || 'all',
+    location: search?.location || 'all',
+  };
+
+  const filteredJobs = useFilteredJobs(jobs || [], currentFilters);
+
+  const handleFiltersChange = (newFilters: JobFiltersType) => {
+    // Only include non-default values in the URL
+    const searchParameters: Partial<JobFiltersType> = {};
+
+    if (newFilters.search && newFilters.search.trim() !== '') {
+      searchParameters.search = newFilters.search;
+    }
+
+    if (newFilters.tag && newFilters.tag !== 'all') {
+      searchParameters.tag = newFilters.tag;
+    }
+
+    if (newFilters.location && newFilters.location !== 'all') {
+      searchParameters.location = newFilters.location;
+    }
+
+    navigate({
+      search: searchParameters,
+    });
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading jobs</div>;
   }
 
   return (
-    <MotionWrapper className="space-y-4">
-      <AnimatePresence mode="wait">
-        {jobId && <JobDetailsModal jobId={jobId} />}
-      </AnimatePresence>
+    <div className="space-y-6">
+      <JobFilters
+        jobs={jobs || []}
+        onFiltersChange={handleFiltersChange}
+        currentFilters={currentFilters}
+      />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {jobs &&
-          jobs.map((job) => (
-            <MotionWrapper key={job.id} type="slide" delay={0.1}>
-              <JobCard job={job} />
-            </MotionWrapper>
-          ))}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {filteredJobs.map((job) => (
+          <JobCard
+            key={job.id}
+            job={job}
+            searchHighlight={search?.search || ''}
+          />
+        ))}
       </div>
-    </MotionWrapper>
+    </div>
   );
 };
