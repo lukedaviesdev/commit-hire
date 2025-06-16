@@ -24,13 +24,13 @@ import { useCurrency } from '@/contexts/currency-context';
 
 import { CurrencySelector, SUPPORTED_CURRENCIES } from './currency-selector';
 
-import type { JobFilters } from '@/hooks/use-filtered-jobs';
+import type { JobFilters as JobFilterType } from '@/hooks/use-filtered-jobs';
 import type { Job } from '@/types/job';
 
 interface JobFiltersProperties {
   jobs: Job[];
-  onFiltersChange: (filters: JobFilters) => void;
-  currentFilters: JobFilters;
+  onFiltersChange: (filters: JobFilterType) => void;
+  currentFilters: JobFilterType;
 }
 
 export const JobFilters = ({
@@ -38,7 +38,7 @@ export const JobFilters = ({
   onFiltersChange,
   currentFilters,
 }: JobFiltersProperties) => {
-  const form = useForm<JobFilters>({
+  const form = useForm<JobFilterType>({
     defaultValues: currentFilters,
   });
 
