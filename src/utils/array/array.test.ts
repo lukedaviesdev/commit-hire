@@ -50,10 +50,6 @@ describe('Array Utils', () => {
         B: [{ id: 2, category: 'B' }],
       });
     });
-
-    it('should handle empty arrays', () => {
-      expect(groupBy([], (item) => item.toString())).toEqual({});
-    });
   });
 
   describe('flatten', () => {

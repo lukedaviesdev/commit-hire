@@ -17,7 +17,7 @@ describe('useMediaQuery', () => {
       dispatchEvent: vi.fn(),
     });
   };
-
+  const mediaQuery = '(min-width: 1024px)';
   beforeEach(() => {
     matchMedia = window.matchMedia;
   });
@@ -29,7 +29,7 @@ describe('useMediaQuery', () => {
   it('should return true when media query matches', () => {
     window.matchMedia = createMatchMedia(true);
 
-    const { result } = renderHook(() => useMediaQuery('(min-width: 1024px)'));
+    const { result } = renderHook(() => useMediaQuery(mediaQuery));
 
     expect(result.current).toBe(true);
   });
@@ -37,7 +37,7 @@ describe('useMediaQuery', () => {
   it('should return false when media query does not match', () => {
     window.matchMedia = createMatchMedia(false);
 
-    const { result } = renderHook(() => useMediaQuery('(min-width: 1024px)'));
+    const { result } = renderHook(() => useMediaQuery(mediaQuery));
 
     expect(result.current).toBe(false);
   });
@@ -51,13 +51,13 @@ describe('useMediaQuery', () => {
       addListener: vi.fn(), // Deprecated
       removeListener: vi.fn(), // Deprecated
       addEventListener: (
-        type: string,
+        _type: string,
         listener: (event: MediaQueryListEvent) => void,
       ) => {
         listeners.add(listener);
       },
       removeEventListener: (
-        type: string,
+        _type: string,
         listener: (event: MediaQueryListEvent) => void,
       ) => {
         listeners.delete(listener);
@@ -65,7 +65,7 @@ describe('useMediaQuery', () => {
       dispatchEvent: vi.fn(),
     }));
 
-    const { result } = renderHook(() => useMediaQuery('(min-width: 1024px)'));
+    const { result } = renderHook(() => useMediaQuery(mediaQuery));
     expect(result.current).toBe(false);
 
     // Simulate media query change
@@ -73,7 +73,7 @@ describe('useMediaQuery', () => {
       listeners.forEach((listener) => {
         listener({
           matches: true,
-          media: '(min-width: 1024px)',
+          media: mediaQuery,
         } as MediaQueryListEvent);
       });
     });
@@ -94,7 +94,7 @@ describe('useMediaQuery', () => {
       dispatchEvent: vi.fn(),
     }));
 
-    const { unmount } = renderHook(() => useMediaQuery('(min-width: 1024px)'));
+    const { unmount } = renderHook(() => useMediaQuery(mediaQuery));
     unmount();
 
     expect(removeEventListener).toHaveBeenCalled();

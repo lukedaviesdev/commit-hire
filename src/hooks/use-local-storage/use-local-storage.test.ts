@@ -7,12 +7,10 @@ describe('useLocalStorage', () => {
   const key = 'test-key';
   const initialValue = { test: 'value' };
   let getItemSpy: ReturnType<typeof vi.spyOn<Storage, 'getItem'>>;
-  let _setItemSpy: ReturnType<typeof vi.spyOn<Storage, 'setItem'>>;
   let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     getItemSpy = vi.spyOn(Storage.prototype, 'getItem');
-    _setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
     consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
