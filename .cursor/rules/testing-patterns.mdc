@@ -1,0 +1,59 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+When writing tests:
+
+1. Test Structure:
+   - Use describe blocks for grouping related tests
+   - Use it/test blocks for individual test cases
+   - Follow the pattern: setup → action → assertion
+   - Use clear, descriptive test names
+
+2. Component Testing:
+   - Use @testing-library/react for component tests
+   - Test user interactions, not implementation details
+   - Use screen queries in order of preference:
+     1. getByRole
+     2. getByLabelText
+     3. getByPlaceholderText
+     4. getByText
+     5. getByDisplayValue
+   - Use userEvent over fireEvent
+
+3. Mocking:
+   - Mock external dependencies
+   - Use vi.fn() for function mocks
+   - Use vi.spyOn() for method spies
+   - Clean up mocks in afterEach
+
+4. Storage Testing:
+   - Mock Storage API for storage tests
+   - Test both success and error cases
+   - Verify cleanup in afterEach
+
+Example test structure:
+```tsx
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+describe('Component', () => {
+  beforeEach(() => {
+    // Setup
+  });
+
+  it('should render correctly', () => {
+    render(<Component />);
+    expect(screen.getByRole('button')).toBeInTheDocument();
+  });
+
+  it('should handle user interaction', async () => {
+    const user = userEvent.setup();
+    render(<Component />);
+    await user.click(screen.getByRole('button'));
+    expect(screen.getByText('Clicked')).toBeInTheDocument();
+  });
+});
+```

@@ -1,0 +1,82 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# API and Data Fetching Patterns
+
+## React Query Usage
+- Use `@tanstack/react-query` for all data fetching
+- Follow pattern: `queryKey → queryFn → options`
+- Use proper query keys as arrays
+- Implement error handling
+- Use appropriate caching strategies
+
+## Query Structure
+- Group related queries in custom hooks
+- Use TypeScript for query responses
+- Implement loading and error states
+- Manage stale and cache times
+- Handle data transformations
+
+## Mutations
+- Use `useMutation` for data modifications
+- Implement optimistic updates
+- Handle errors appropriately
+- Invalidate related queries
+- Show success/error feedback
+
+## Mock Data Integration
+- Store mock data in `/public/mock/`
+- Use TypeScript interfaces for mock data
+- Implement proper error handling
+- Test with realistic data
+- Document data structure
+
+## Example Query Hook
+```typescript
+// hooks/useData.ts
+import { useQuery } from '@tanstack/react-query';
+import { fetchData } from '../lib/api';
+
+export function useData<T>(queryKey: string[], url: string) {
+  return useQuery({
+    queryKey,
+    queryFn: () => fetchData<T>(url),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 2,
+  });
+}
+```
+
+## Example Mutation Hook
+```typescript
+// hooks/useUpdateData.ts
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateData } from '../lib/api';
+
+export function useUpdateData() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateData,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['data'] });
+    },
+  });
+}
+```
+
+## Error Handling
+- Use try/catch blocks
+- Provide meaningful error messages
+- Log errors for debugging
+- Show user-friendly error states
+- Implement retry logic where appropriate
+
+## Testing
+- Mock API responses
+- Test loading states
+- Verify error handling
+- Test data transformations
+- Check cache behavior

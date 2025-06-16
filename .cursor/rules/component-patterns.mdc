@@ -1,0 +1,296 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# React Component Patterns
+
+## Component Structure
+- Use functional components with TypeScript
+- Follow single responsibility principle
+- Keep components focused and small
+- Use proper folder structure
+- Follow consistent naming conventions
+- Leverage shadcn components where possible
+- Add smooth transitions and animations where appropriate
+
+## Animation Patterns
+- Use Motion for animations and transitions
+- Follow consistent animation patterns
+- Keep animations subtle and purposeful
+- Use layout animations for smooth transitions
+- Implement proper loading states
+
+### Motion Usage
+```typescript
+// Good: Using Motion for list animations
+import { motion, AnimatePresence } from 'framer-motion';
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+};
+
+export function List({ items }) {
+  return (
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
+      <AnimatePresence mode="popLayout">
+        {items.map(item => (
+          <motion.div key={item.id} variants={item} layout>
+            <Item {...item} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+// Avoid: Custom animation solutions
+export function List({ items }) {
+  return (
+    <div className="animate-fade-in">
+      {items.map(item => (
+        <div key={item.id} className="animate-slide-up">
+          <Item {...item} />
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### Animation Best Practices
+1. Performance:
+   - Use `layout` prop for smooth layout transitions
+   - Use `AnimatePresence` for exit animations
+   - Use `willChange` for performance-critical animations
+   - Keep animations GPU-accelerated
+
+2. User Experience:
+   - Keep animations subtle and purposeful
+   - Use consistent timing and easing
+   - Provide loading states
+   - Consider reduced motion preferences
+
+3. Implementation:
+   - Define animation variants at component level
+   - Use semantic animation names
+   - Keep animation logic separate from business logic
+   - Test animations across devices
+
+## Folder Structure
+```
+src/
+  components/
+    feature-name/
+      component-name/
+        component-name.tsx
+        component-name.test.tsx
+        component-name.stories.tsx
+        index.ts
+```
+
+## Naming Conventions
+- Use lowercase with hyphens for all component files and folders
+  - ✅ `job-card/job-card.tsx`
+  - ✅ `job-list/job-list.tsx`
+  - ❌ `JobCard.tsx`
+  - ❌ `jobCard.tsx`
+- Use PascalCase for component names in code
+  - ✅ `export function JobCard()`
+  - ❌ `export function job-card()`
+- Use descriptive, feature-based folder names
+  - ✅ `components/jobs/job-card/`
+  - ✅ `components/auth/login-form/`
+  - ❌ `components/JobCard/`
+  - ❌ `components/jobCard/`
+
+## shadcn Usage
+- Use shadcn components as building blocks
+- Follow shadcn composition patterns
+- Use proper component variants
+- Leverage built-in animations and transitions
+- Use semantic color tokens
+
+### Installation
+```bash
+# Install shadcn CLI
+npx shadcn@latest init
+
+# Add components
+npx shadcn@latest add card
+npx shadcn@latest add badge
+npx shadcn@latest add alert
+```
+
+### Component Composition
+```typescript
+// Good: Using shadcn components
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+
+export function JobCard({ job }: JobCardProps) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{job.title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Badge>{job.tag}</Badge>
+      </CardContent>
+    </Card>
+  );
+}
+
+// Avoid: Custom styling when shadcn exists
+export function JobCard({ job }: JobCardProps) {
+  return (
+    <div className="rounded-lg border p-4">
+      <h3 className="text-lg font-bold">{job.title}</h3>
+      <span className="bg-gray-100 px-2 py-1 rounded">{job.tag}</span>
+    </div>
+  );
+}
+```
+
+## Component Organization
+- Each component should have its own folder
+- Include related files in the component folder:
+  - Component file (`component-name.tsx`)
+  - Test file (`component-name.test.tsx`)
+  - Stories file (`component-name.stories.tsx`)
+  - Index file (`index.ts`)
+- Co-locate related components in feature folders
+
+## Best Practices
+1. File Organization:
+   - Keep one component per file
+   - Use index files for clean exports
+   - Group related components in feature folders
+   - Follow consistent folder structure
+
+2. Component Structure:
+   - Use TypeScript interfaces for props
+   - Keep components focused and small
+   - Use proper prop types
+   - Implement proper error boundaries
+   - Use shadcn components when available
+   - Add smooth transitions where appropriate
+
+3. Styling:
+   - Use Tailwind CSS for styling
+   - Use shadcn semantic color tokens
+   - Follow BEM-like class naming
+   - Keep styles scoped to components
+   - Use CSS variables for theming
+
+4. Performance:
+   - Use React.memo when needed
+   - Implement proper key props
+   - Avoid unnecessary re-renders
+   - Use proper state management
+   - Optimize animations for performance
+
+5. Testing:
+   - Write unit tests for components
+   - Test user interactions
+   - Test error states
+   - Test accessibility
+   - Test animations and transitions
+
+## Component Example
+```typescript
+// src/components/jobs/job-card/job-card.tsx
+import { Job } from '../../../lib/api';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+
+interface JobCardProps {
+  job: Job;
+  onApply?: (jobId: string) => void;
+}
+
+export function JobCard({ job, onApply }: JobCardProps) {
+  return (
+    <Card className="hover:shadow-md transition-shadow">
+      <CardHeader>
+        <CardTitle>{job.title}</CardTitle>
+        <p className="text-muted-foreground">{job.company}</p>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-wrap gap-2">
+          {job.tags.map((tag) => (
+            <Badge key={tag} variant="secondary">
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+When working with React components:
+
+1. Component Structure:
+   - Use functional components with TypeScript
+   - Place props interface at the top of the file
+   - Use named exports
+   - Follow the pattern: imports → types → component → exports
+
+2. Styling:
+   - Use Tailwind CSS for styling
+   - Follow the pattern: className="[base styles] [state styles] [responsive styles]"
+   - Use the cn() utility for conditional classes
+
+3. Props:
+   - Use TypeScript interfaces for props
+   - Destructure props in the function parameters
+   - Use default values when appropriate
+   - Document complex props with JSDoc
+
+4. State Management:
+   - Use React Query for server state
+   - Use useState for simple local state
+   - Use useReducer for complex state logic
+   - Keep state as close as possible to where it's used
+
+5. Performance:
+   - Memoize expensive calculations with useMemo
+   - Memoize callbacks with useCallback
+   - Use React.memo for expensive renders
+   - Implement proper cleanup in useEffect
+
+Example component structure:
+```tsx
+import { type FC } from 'react';
+import { cn } from '@/lib/utils';
+
+interface ComponentProps {
+  title: string;
+  className?: string;
+}
+
+export const Component: FC<ComponentProps> = ({
+  title,
+  className
+}) => {
+  return (
+    <div className={cn('base-styles', className)}>
+      {title}
+    </div>
+  );
+};
