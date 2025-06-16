@@ -20,26 +20,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useCurrencyConversion } from '@/hooks/use-currency-conversion';
+import { useCurrency } from '@/contexts/currency-context';
 
 import { CurrencySelector, SUPPORTED_CURRENCIES } from './currency-selector';
 
+import type { JobFilters } from '@/hooks/use-filtered-jobs';
 import type { Job } from '@/types/job';
 
 interface JobFiltersProperties {
   jobs: Job[];
   onFiltersChange: (filters: JobFilters) => void;
   currentFilters: JobFilters;
-}
-
-export interface JobFilters {
-  search: string;
-  tag: string;
-  location: string;
-  savedOnly: boolean;
-  remoteOnly: boolean;
-  minSalary?: number;
-  currency: string;
 }
 
 export const JobFilters = ({
@@ -58,7 +49,7 @@ export const JobFilters = ({
     isLoading: currencyLoading,
     error: currencyError,
     lastUpdated,
-  } = useCurrencyConversion();
+  } = useCurrency();
 
   // Only update parent when form values actually change from user interaction
   useEffect(() => {

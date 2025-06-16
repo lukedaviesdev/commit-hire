@@ -11,7 +11,7 @@ import {
 import { TextHighlight } from '@/components/common/text-highlight/text-highlight';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useCurrencyConversion } from '@/hooks/use-currency-conversion';
+import { useCurrency } from '@/contexts/currency-context';
 import { useSavedJobs } from '@/hooks/use-saved-jobs';
 
 import type { Job } from '@/types/job';
@@ -30,7 +30,7 @@ export const JobCard = ({
   const navigate = useNavigate();
   const search = useSearch({ from: '/jobs' });
   const { isSaved, toggleSave } = useSavedJobs();
-  const { convert } = useCurrencyConversion();
+  const { convert } = useCurrency();
 
   const handleClick = () => {
     navigate({ to: `/jobs/${job.id}`, search });

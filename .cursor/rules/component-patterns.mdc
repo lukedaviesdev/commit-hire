@@ -917,3 +917,71 @@ export const JobList = () => {
    - Explain prop interfaces
    - Note any performance considerations
    - Include usage examples
+
+## React Hooks Best Practices
+
+### Hook Usage Rules
+1. **useEffect vs useMemo**:
+   - Use `useEffect` for side effects (e.g., API calls, subscriptions, DOM updates)
+   - Use `useMemo` for expensive computations that should be cached
+   - NEVER use `useMemo` for side effects that trigger state updates
+   - NEVER use `useMemo` with dependencies that change on every render
+
+2. **Dependency Arrays**:
+   - Always include all dependencies used inside the hook
+   - Use the ESLint exhaustive-deps rule to catch missing dependencies
+   - Be careful with object/array dependencies - consider using primitive values
+   - Use `useCallback` for function dependencies
+
+3. **State Updates**:
+   - Avoid state updates in render phase
+   - Use `useEffect` for state updates that depend on props/state
+   - Consider using `useReducer` for complex state logic
+   - Batch related state updates
+
+4. **Common Pitfalls**:
+   - Infinite loops from missing/incorrect dependencies
+   - Stale closures in callbacks
+   - Unnecessary re-renders from new object/array references
+   - Race conditions in async operations
+
+### Examples
+
+```tsx
+// ❌ BAD: Using useMemo for side effects
+const Component = () => {
+  useMemo(() => {
+    // This will cause an infinite loop if parentState changes
+    setParentState(newValue);
+  }, [parentState]);
+
+  return <div />;
+};
+
+// ✅ GOOD: Using useEffect for side effects
+const Component = () => {
+  useEffect(() => {
+    setParentState(newValue);
+  }, [newValue]);
+
+  return <div />;
+};
+
+// ❌ BAD: Missing dependencies
+const Component = () => {
+  useEffect(() => {
+    console.log(count);
+  }, []); // Missing count dependency
+
+  return <div />;
+};
+
+// ✅ GOOD: Proper dependencies
+const Component = () => {
+  useEffect(() => {
+    console.log(count);
+  }, [count]);
+
+  return <div />;
+};
+```
