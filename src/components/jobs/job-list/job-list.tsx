@@ -1,14 +1,12 @@
 import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useMemo } from 'react';
 
-import { useFilteredJobs } from '@/hooks/use-filtered-jobs';
+import { useFilteredJobs, type JobFilters } from '@/hooks/use-filtered-jobs';
 import { useJobs } from '@/hooks/use-jobs';
 import { useSavedJobs } from '@/hooks/use-saved-jobs';
 
 import { JobCard } from '../job-card/job-card';
-import {
-  JobFilters,
-  type JobFilters as JobFiltersType,
-} from '../job-filters/job-filters';
+import { JobFilters as JobFiltersComponent } from '../job-filters/job-filters';
 
 export const JobList = () => {
   const navigate = useNavigate({ from: '/jobs' });
@@ -16,22 +14,25 @@ export const JobList = () => {
   const { data: jobs, isLoading, error } = useJobs();
   const { savedIds } = useSavedJobs();
 
-  // Provide defaults for optional search parameters
-  const currentFilters = {
-    search: search?.search || '',
-    tag: search?.tag || 'all',
-    location: search?.location || 'all',
-    savedOnly: search?.savedOnly || false,
-    remoteOnly: search?.remoteOnly || false,
-    minSalary: search?.minSalary,
-    currency: search?.currency || 'USD',
-  };
+  // Provide defaults for optional search parameters - memoized to prevent object recreation
+  const currentFilters = useMemo(
+    () => ({
+      search: search?.search || '',
+      tag: search?.tag || 'all',
+      location: search?.location || 'all',
+      savedOnly: search?.savedOnly || false,
+      remoteOnly: search?.remoteOnly || false,
+      minSalary: search?.minSalary,
+      currency: search?.currency || 'USD',
+    }),
+    [search],
+  );
 
   const filteredJobs = useFilteredJobs(jobs || [], currentFilters, savedIds);
 
-  const handleFiltersChange = (newFilters: JobFiltersType) => {
+  const handleFiltersChange = (newFilters: JobFilters) => {
     // Only include non-default values in the URL
-    const searchParameters: Partial<JobFiltersType> = {};
+    const searchParameters: Partial<JobFilters> = {};
 
     if (newFilters.search && newFilters.search.trim() !== '') {
       searchParameters.search = newFilters.search;
@@ -76,7 +77,7 @@ export const JobList = () => {
 
   return (
     <div className="space-y-6">
-      <JobFilters
+      <JobFiltersComponent
         jobs={jobs || []}
         onFiltersChange={handleFiltersChange}
         currentFilters={currentFilters}

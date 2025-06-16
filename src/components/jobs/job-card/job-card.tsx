@@ -11,7 +11,8 @@ import {
 import { TextHighlight } from '@/components/common/text-highlight/text-highlight';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useCurrencyConversion } from '@/hooks/use-currency-conversion';
+import { Separator } from '@/components/ui/separator';
+import { useCurrency } from '@/contexts/currency-context';
 import { useSavedJobs } from '@/hooks/use-saved-jobs';
 
 import type { Job } from '@/types/job';
@@ -30,7 +31,7 @@ export const JobCard = ({
   const navigate = useNavigate();
   const search = useSearch({ from: '/jobs' });
   const { isSaved, toggleSave } = useSavedJobs();
-  const { convert } = useCurrencyConversion();
+  const { convert } = useCurrency();
 
   const handleClick = () => {
     navigate({ to: `/jobs/${job.id}`, search });
@@ -89,17 +90,17 @@ export const JobCard = ({
 
   return (
     <Card
-      className="cursor-pointer transition-colors hover:bg-muted/50"
+      className="cursor-pointer transition-colors hover:bg-muted/50 flex flex-col justify-between"
       onClick={handleClick}
     >
       <CardHeader>
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between mb-2">
           <div className="flex-1">
             <CardTitle>
               <TextHighlight
                 text={job.title}
                 highlight={searchHighlight}
-                className="line-clamp-2"
+                className="line-clamp-2 pb-2"
               />
             </CardTitle>
             <div className="text-sm text-muted-foreground">
@@ -120,6 +121,37 @@ export const JobCard = ({
             )}
           </Button>
         </div>
+        <div className="flex gap-4 items-start min-h-[40px]">
+          {job.remote ? (
+            <div className="flex items-center gap-2">
+              <Laptop
+                className="h-4 w-4 text-muted-foreground"
+                aria-hidden="true"
+              />
+              <span className="bg-accent text-accent-foreground text-xs rounded px-2 py-0.5">
+                Remote
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground ">
+              <MapPin
+                className="h-4 w-4 text-muted-foreground"
+                aria-hidden="true"
+              />
+              {job.location}
+            </div>
+          )}
+          <Separator orientation="vertical" className="h-5" />
+          {job.salaryRange && (
+            <div className="flex items-start gap-2 text-sm text-muted-foreground flex-1">
+              <Wallet
+                className="h-4 w-4 text-muted-foreground mt-0.5"
+                aria-hidden="true"
+              />
+              <div className="flex-1">{formatSalary(job.salaryRange)}</div>
+            </div>
+          )}
+        </div>
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2">
@@ -135,35 +167,6 @@ export const JobCard = ({
               <TextHighlight text={tag} highlight={searchHighlight} />
             </span>
           ))}
-        </div>
-        <div className="mt-4 space-y-2">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin
-              className="h-4 w-4 text-muted-foreground"
-              aria-hidden="true"
-            />
-            {job.location}
-          </div>
-          {job.salaryRange && (
-            <div className="flex items-start gap-2 text-sm text-muted-foreground">
-              <Wallet
-                className="h-4 w-4 text-muted-foreground mt-0.5"
-                aria-hidden="true"
-              />
-              <div className="flex-1">{formatSalary(job.salaryRange)}</div>
-            </div>
-          )}
-          {job.remote && (
-            <div className="flex items-center gap-2">
-              <Laptop
-                className="h-4 w-4 text-muted-foreground"
-                aria-hidden="true"
-              />
-              <span className="bg-accent text-accent-foreground text-xs rounded px-2 py-0.5">
-                Remote
-              </span>
-            </div>
-          )}
         </div>
       </CardContent>
     </Card>

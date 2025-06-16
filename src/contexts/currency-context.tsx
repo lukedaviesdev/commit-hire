@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+import type { ReactNode } from 'react';
 
 export interface ExchangeRates {
   [currency: string]: number;
 }
 
-export interface CurrencyConversionResult {
+export interface CurrencyContextValue {
   rates: ExchangeRates;
   isLoading: boolean;
   error: string | null;
@@ -30,9 +32,19 @@ interface CachedData {
   timestamp: number;
 }
 
-export const useCurrencyConversion = (
-  baseCurrency: string = 'USD',
-): CurrencyConversionResult => {
+const CurrencyContext = createContext<CurrencyContextValue | undefined>(
+  undefined,
+);
+
+interface CurrencyProviderProperties {
+  children: ReactNode;
+  baseCurrency?: string;
+}
+
+export const CurrencyProvider: React.FC<CurrencyProviderProperties> = ({
+  children,
+  baseCurrency = 'USD',
+}) => {
   const [rates, setRates] = useState<ExchangeRates>(FALLBACK_RATES);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -143,11 +155,25 @@ export const useCurrencyConversion = (
     return baseAmount * toRate;
   };
 
-  return {
+  const contextValue: CurrencyContextValue = {
     rates,
     isLoading,
     error,
     convert,
     lastUpdated,
   };
+
+  return (
+    <CurrencyContext.Provider value={contextValue}>
+      {children}
+    </CurrencyContext.Provider>
+  );
+};
+
+export const useCurrency = (): CurrencyContextValue => {
+  const context = useContext(CurrencyContext);
+  if (context === undefined) {
+    throw new Error('useCurrency must be used within a CurrencyProvider');
+  }
+  return context;
 };

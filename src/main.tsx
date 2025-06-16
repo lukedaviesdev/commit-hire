@@ -4,6 +4,7 @@ import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { Toaster } from 'sonner';
 
+import { CurrencyProvider } from './contexts/currency-context';
 import './index.css';
 // Import the generated route tree
 import { routeTree } from './routeTree.gen';
@@ -39,8 +40,10 @@ const App = () => {
   return (
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <Toaster />
+        <CurrencyProvider>
+          <RouterProvider router={router} />
+          <Toaster />
+        </CurrencyProvider>
       </QueryClientProvider>
     </StrictMode>
   );
