@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { VisuallyHidden } from '@/components/ui/visually-hidden';
-import { useJobById } from '@/hooks/useJobById';
+import { useJobById } from '@/hooks/use-job-by-id';
 
 import { JobDetailsModalContent } from './job-details-modal-content';
 import { JobDetailsModalStates } from './job-details-modal-states';
@@ -39,7 +39,7 @@ export const JobDetailsModal = ({ jobId }: JobDetailsModalProperties) => {
   }, []);
 
   const handleClose = () => {
-    navigate({ to: '/' });
+    navigate({ to: '/jobs' });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

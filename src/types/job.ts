@@ -5,4 +5,5 @@ export interface Job {
   location: string;
   description: string;
   tags: string[];
+  applyUrl: string;
 }

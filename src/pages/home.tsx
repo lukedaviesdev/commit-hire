@@ -1,4 +1,3 @@
-import { JobList } from '@/components/jobs/job-list/job-list';
 import { DefaultLayout } from '@/layout/default-layout';
 import './styles.scss';
 
@@ -9,7 +8,7 @@ export const HomePage = () => {
         title: 'Home Page',
       }}
     >
-      <JobList />
+      <h1>welcome to the home page</h1>
     </DefaultLayout>
   );
 };
