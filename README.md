@@ -10,12 +10,15 @@ A modern, responsive job search and listing application built with React 18, Typ
 - **Tag-based Filtering**: Filter by technology stack, work type, and categories
 - **Real-time Filtering**: Instant results as you type and select filters
 - **URL State Management**: Shareable URLs with filter states
+- **Saved Jobs Filter**: Toggle to show only bookmarked/saved jobs
 
 ### 💼 Job Browsing
 - **Responsive Grid Layout**: Optimized display for desktop, tablet, and mobile
 - **Interactive Job Cards**: Hover effects and smooth transitions
 - **Search Highlighting**: Visual highlighting of search terms in results
 - **Empty State Handling**: Graceful handling when no jobs match filters
+- **Job Bookmarking**: Save/unsave jobs with persistent local storage
+- **Multi-tab Sync**: Bookmark changes sync across browser tabs
 
 ### 📋 Job Details
 - **Modal Interface**: Clean, accessible modal overlay for job details
@@ -48,6 +51,8 @@ src/
 │   ├── use-jobs.ts            # Job data fetching hook
 │   ├── use-job-by-id.ts       # Individual job fetching hook
 │   ├── use-filtered-jobs.ts   # Client-side filtering logic
+│   ├── use-saved-jobs.ts      # Local storage job bookmarking hook
+│   ├── use-local-storage/     # Generic local storage hook with SSR safety
 │   └── ...
 ├── pages/
 │   ├── home.tsx               # Landing page
@@ -136,6 +141,22 @@ src/
 
 ## 🎯 Key Features Deep Dive
 
+### Job Bookmarking System
+The application includes a comprehensive job bookmarking system that:
+- **Local Storage Persistence**: Saves bookmarked jobs locally with automatic persistence
+- **Multi-tab Synchronization**: Changes sync instantly across all open browser tabs
+- **SSR Safe**: Handles server-side rendering without hydration mismatches
+- **Visual Feedback**: Clear bookmark icons show save state (filled/outlined)
+- **Accessible Interface**: Keyboard navigation and screen reader support
+- **Filter Integration**: "Show saved jobs only" checkbox to view bookmarked jobs
+- **URL State**: Filter state persists in shareable URLs
+
+The bookmarking feature is built with:
+- `useSavedJobs()` hook providing `isSaved()`, `toggleSave()`, and `savedIds` array
+- Generic `useLocalStorage()` hook with cross-tab synchronization
+- Integration with existing filter system and URL state management
+- Consistent styling using ShadCN/ui components
+
 ### Smart Filtering System
 The application implements a sophisticated filtering system that:
 - Maintains filter state in the URL for shareability
@@ -173,6 +194,30 @@ The application includes:
 - Automated testing in CI/CD pipeline
 
 ## 🔧 Customization
+
+### Using the Bookmarking Feature
+**For Users:**
+1. Click the bookmark icon on any job card to save/unsave jobs
+2. Use the "Show saved jobs only" checkbox in filters to view bookmarked jobs
+3. Bookmark state persists across browser sessions and tabs
+4. Filter state including saved jobs filter is shareable via URL
+
+**For Developers:**
+```typescript
+import { useSavedJobs } from '@/hooks/use-saved-jobs';
+
+// In your component
+const { savedIds, isSaved, toggleSave } = useSavedJobs();
+
+// Check if a job is saved
+const isJobSaved = isSaved('job-id');
+
+// Toggle save status
+toggleSave('job-id');
+
+// Get all saved job IDs
+console.log(savedIds); // ['job-1', 'job-3', ...]
+```
 
 ### Adding New Job Fields
 1. Update the `Job` interface in `src/types/job.ts`
