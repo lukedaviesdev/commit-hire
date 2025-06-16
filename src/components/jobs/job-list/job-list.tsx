@@ -2,6 +2,7 @@ import { useNavigate, useSearch } from '@tanstack/react-router';
 
 import { useFilteredJobs } from '@/hooks/use-filtered-jobs';
 import { useJobs } from '@/hooks/use-jobs';
+import { useSavedJobs } from '@/hooks/use-saved-jobs';
 
 import { JobCard } from '../job-card/job-card';
 import {
@@ -13,15 +14,17 @@ export const JobList = () => {
   const navigate = useNavigate({ from: '/jobs' });
   const search = useSearch({ from: '/jobs' });
   const { data: jobs, isLoading, error } = useJobs();
+  const { savedIds } = useSavedJobs();
 
   // Provide defaults for optional search parameters
   const currentFilters = {
     search: search?.search || '',
     tag: search?.tag || 'all',
     location: search?.location || 'all',
+    savedOnly: (search as any)?.savedOnly || false,
   };
 
-  const filteredJobs = useFilteredJobs(jobs || [], currentFilters);
+  const filteredJobs = useFilteredJobs(jobs || [], currentFilters, savedIds);
 
   const handleFiltersChange = (newFilters: JobFiltersType) => {
     // Only include non-default values in the URL
@@ -37,6 +40,10 @@ export const JobList = () => {
 
     if (newFilters.location && newFilters.location !== 'all') {
       searchParameters.location = newFilters.location;
+    }
+
+    if (newFilters.savedOnly) {
+      searchParameters.savedOnly = newFilters.savedOnly;
     }
 
     navigate({

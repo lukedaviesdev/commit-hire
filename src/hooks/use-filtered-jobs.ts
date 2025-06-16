@@ -3,9 +3,18 @@ import { useMemo } from 'react';
 import type { JobFilters } from '@/components/jobs/job-filters/job-filters';
 import type { Job } from '@/types/job';
 
-export const useFilteredJobs = (jobs: Job[], filters: JobFilters) => {
+export const useFilteredJobs = (
+  jobs: Job[],
+  filters: JobFilters,
+  savedIds: string[] = [],
+) => {
   return useMemo(() => {
     return jobs.filter((job) => {
+      // Saved only filter
+      if (filters.savedOnly && !savedIds.includes(job.id)) {
+        return false;
+      }
+
       // Search filter
       if (filters.search) {
         const searchLower = filters.search.toLowerCase();
@@ -37,5 +46,5 @@ export const useFilteredJobs = (jobs: Job[], filters: JobFilters) => {
 
       return true;
     });
-  }, [jobs, filters]);
+  }, [jobs, filters, savedIds]);
 };

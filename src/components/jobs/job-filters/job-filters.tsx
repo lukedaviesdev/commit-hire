@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -30,6 +31,7 @@ export interface JobFilters {
   search: string;
   tag: string;
   location: string;
+  savedOnly: boolean;
 }
 
 export const JobFilters = ({
@@ -49,7 +51,8 @@ export const JobFilters = ({
     const hasChanged =
       formValues.search !== currentFilters.search ||
       formValues.tag !== currentFilters.tag ||
-      formValues.location !== currentFilters.location;
+      formValues.location !== currentFilters.location ||
+      formValues.savedOnly !== currentFilters.savedOnly;
 
     if (hasChanged) {
       onFiltersChange(formValues);
@@ -77,6 +80,7 @@ export const JobFilters = ({
       search: '',
       tag: 'all',
       location: 'all',
+      savedOnly: false,
     };
     form.reset(clearedFilters);
     onFiltersChange(clearedFilters);
@@ -152,6 +156,26 @@ export const JobFilters = ({
             )}
           />
         </div>
+
+        <FormField
+          control={form.control}
+          name="savedOnly"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel className="text-sm font-normal">
+                  Show saved jobs only
+                </FormLabel>
+              </div>
+            </FormItem>
+          )}
+        />
 
         <div className="flex justify-end">
           <Button variant="outline" onClick={handleClearFilters}>
