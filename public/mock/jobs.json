@@ -116,25 +116,6 @@
     },
     {
       "id": "job-7",
-      "title": "Mobile Developer",
-      "company": "DataSense",
-      "location": "Amsterdam, Netherlands",
-      "description": "We're hiring a Mobile Developer at DataSense. Join us to build something great.",
-      "tags": [
-        "Swift",
-        "iOS",
-        "Xcode"
-      ],
-      "applyUrl": "https://datasense.com/careers/mobile-developer",
-      "salaryRange": {
-        "min": 73571,
-        "max": 84839,
-        "currency": "EUR"
-      },
-      "remote": false
-    },
-    {
-      "id": "job-8",
       "title": "Data Analyst",
       "company": "ProdMaster",
       "location": "Sydney, Australia",

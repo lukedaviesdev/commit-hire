@@ -1,4 +1,5 @@
 import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useMemo } from 'react';
 
 import { useFilteredJobs, type JobFilters } from '@/hooks/use-filtered-jobs';
 import { useJobs } from '@/hooks/use-jobs';
@@ -13,16 +14,19 @@ export const JobList = () => {
   const { data: jobs, isLoading, error } = useJobs();
   const { savedIds } = useSavedJobs();
 
-  // Provide defaults for optional search parameters
-  const currentFilters = {
-    search: search?.search || '',
-    tag: search?.tag || 'all',
-    location: search?.location || 'all',
-    savedOnly: search?.savedOnly || false,
-    remoteOnly: search?.remoteOnly || false,
-    minSalary: search?.minSalary,
-    currency: search?.currency || 'USD',
-  };
+  // Provide defaults for optional search parameters - memoized to prevent object recreation
+  const currentFilters = useMemo(
+    () => ({
+      search: search?.search || '',
+      tag: search?.tag || 'all',
+      location: search?.location || 'all',
+      savedOnly: search?.savedOnly || false,
+      remoteOnly: search?.remoteOnly || false,
+      minSalary: search?.minSalary,
+      currency: search?.currency || 'USD',
+    }),
+    [search],
+  );
 
   const filteredJobs = useFilteredJobs(jobs || [], currentFilters, savedIds);
 
