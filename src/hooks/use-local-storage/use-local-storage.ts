@@ -22,6 +22,15 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState<T>(readValue);
 
+  // Update state when localStorage value changes (important for SSR/hydration)
+  useEffect(() => {
+    // Only update if the current value is different from localStorage
+    const currentValue = readValue();
+    if (JSON.stringify(currentValue) !== JSON.stringify(storedValue)) {
+      setStoredValue(currentValue);
+    }
+  }, [key]); // Only depend on key, not readValue or storedValue to avoid infinite loops
+
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to localStorage.
   const setValue = useCallback(
