@@ -1,3 +1,4 @@
+import { Search, MapPin, Tag } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -95,7 +96,13 @@ export const JobFilters = ({
             name="search"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Search</FormLabel>
+                <FormLabel className="flex items-center gap-2">
+                  <Search
+                    className="h-4 w-4 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                  Search
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Search jobs, companies, or tags..."
@@ -111,7 +118,13 @@ export const JobFilters = ({
             name="tag"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tag</FormLabel>
+                <FormLabel className="flex items-center gap-2">
+                  <Tag
+                    className="h-4 w-4 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                  Tag
+                </FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
@@ -136,7 +149,13 @@ export const JobFilters = ({
             name="location"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Location</FormLabel>
+                <FormLabel className="flex items-center gap-2">
+                  <MapPin
+                    className="h-4 w-4 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                  Location
+                </FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>

@@ -1,5 +1,5 @@
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { Bookmark, BookmarkCheck } from 'lucide-react';
+import { Bookmark, BookmarkCheck, MapPin, Briefcase } from 'lucide-react';
 
 import { TextHighlight } from '@/components/common/text-highlight/text-highlight';
 import { Button } from '@/components/ui/button';
@@ -68,13 +68,23 @@ export const JobCard = ({ job, searchHighlight = '' }: JobCardProperties) => {
           {job.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
+              className="flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
             >
+              <Briefcase
+                className="h-3 w-3 text-muted-foreground"
+                aria-hidden="true"
+              />
               <TextHighlight text={tag} highlight={searchHighlight} />
             </span>
           ))}
         </div>
-        <div className="mt-4 text-sm text-muted-foreground">{job.location}</div>
+        <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+          <MapPin
+            className="h-4 w-4 text-muted-foreground"
+            aria-hidden="true"
+          />
+          {job.location}
+        </div>
       </CardContent>
     </Card>
   );

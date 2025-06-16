@@ -1,3 +1,5 @@
+import { MapPin, Briefcase } from 'lucide-react';
+
 import { MotionWrapper } from '@/components/common/motion-wrapper/motion-wrapper';
 import { DialogDescription } from '@/components/ui/dialog';
 
@@ -21,8 +23,12 @@ export const JobDetailsModalContent = ({
         {job.tags.map((tag) => (
           <span
             key={tag}
-            className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
+            className="flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm text-primary"
           >
+            <Briefcase
+              className="h-3 w-3 text-muted-foreground"
+              aria-hidden="true"
+            />
             {tag}
           </span>
         ))}
@@ -30,7 +36,13 @@ export const JobDetailsModalContent = ({
 
       <div className="space-y-2">
         <h3 className="font-semibold">Location</h3>
-        <p className="text-muted-foreground">{job.location}</p>
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <MapPin
+            className="h-4 w-4 text-muted-foreground"
+            aria-hidden="true"
+          />
+          {job.location}
+        </div>
       </div>
 
       <div className="space-y-2">
