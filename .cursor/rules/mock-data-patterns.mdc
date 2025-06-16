@@ -3,3 +3,74 @@ description:
 globs:
 alwaysApply: false
 ---
+# Mock Data and API Integration Patterns
+
+## Mock Data Structure
+- Store mock data in `/public/mock/` directory
+- Use descriptive filenames (e.g., `jobs.json`, `users.json`)
+- Follow consistent JSON structure with clear root keys
+- Include realistic but safe test data
+- Document any special data patterns or requirements
+
+## API Integration
+- Define TypeScript interfaces for all API responses
+- Use consistent error handling patterns
+- Implement proper loading and error states
+- Follow React Query best practices
+- Keep API functions pure and focused
+
+## Example Structure
+```typescript
+// types.ts
+interface ApiResponse<T> {
+  data: T;
+  error?: string;
+}
+
+// api.ts
+async function fetchData<T>(url: string): Promise<T> {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status} ${response.statusText}`);
+    }
+    return response.json();
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+}
+
+// hook.ts
+function useData<T>(queryKey: string[], url: string) {
+  return useQuery({
+    queryKey,
+    queryFn: () => fetchData<T>(url),
+  });
+}
+```
+
+## Best Practices
+1. Mock Data:
+   - Keep mock data in public directory for static serving
+   - Use realistic but anonymized data
+   - Include all necessary fields for testing
+   - Document any special data patterns
+
+2. API Functions:
+   - Use TypeScript for type safety
+   - Implement proper error handling
+   - Add logging for debugging
+   - Keep functions pure and focused
+
+3. React Query:
+   - Use consistent query keys
+   - Implement proper loading states
+   - Handle errors gracefully
+   - Use appropriate caching strategies
+
+4. Testing:
+   - Mock API responses in tests
+   - Test error scenarios
+   - Verify loading states
+   - Test data transformations

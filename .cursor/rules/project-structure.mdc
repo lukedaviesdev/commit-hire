@@ -3,7 +3,15 @@ description:
 globs:
 alwaysApply: false
 ---
-Project Structure Guidelines:
+# Project Structure and Organization
+
+## Package Dependencies
+- Use @tanstack/react-router-devtools for router debugging
+- Keep dependencies up to date with latest versions
+- Follow package migration guides
+- Use proper package names and versions
+
+## Directory Organization:
 
 1. Directory Organization:
    - /src
