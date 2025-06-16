@@ -1,5 +1,8 @@
 echo "🔍 Running type check..."
 npm run type-check || exit 1
 
-# echo "🧪 Running full test suite..."
-# npm run test:ci || exit 1
+echo "🧪 Running full test suite..."
+npm run test|| exit 1
+
+echo "🔍 Running lint..."
+npm run lint|| exit 1
