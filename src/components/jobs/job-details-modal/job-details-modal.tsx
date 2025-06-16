@@ -42,8 +42,8 @@ export const JobDetailsModal = ({ jobId }: JobDetailsModalProperties) => {
     navigate({ to: '/jobs' });
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
+  const handleKeyDown = (_error: React.KeyboardEvent) => {
+    if (_error.key === 'Escape') {
       handleClose();
     }
   };
