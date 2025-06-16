@@ -21,7 +21,7 @@ export const JobList = () => {
     search: search?.search || '',
     tag: search?.tag || 'all',
     location: search?.location || 'all',
-    savedOnly: (search as any)?.savedOnly || false,
+    savedOnly: search?.savedOnly || false,
   };
 
   const filteredJobs = useFilteredJobs(jobs || [], currentFilters, savedIds);

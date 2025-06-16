@@ -6,6 +6,7 @@ export interface JobsSearch {
   search?: string;
   tag?: string;
   location?: string;
+  savedOnly?: boolean;
 }
 
 export const Route = createFileRoute('/jobs')({
@@ -23,6 +24,11 @@ export const Route = createFileRoute('/jobs')({
 
     if (search.location !== undefined && search.location !== null) {
       result.location = search.location.toString();
+    }
+
+    if (search.savedOnly !== undefined && search.savedOnly !== null) {
+      result.savedOnly =
+        search.savedOnly === 'true' || search.savedOnly === true;
     }
 
     return result;

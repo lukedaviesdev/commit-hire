@@ -1,4 +1,4 @@
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import { AnimatePresence } from 'motion/react';
 import { useEffect, useRef } from 'react';
 
@@ -21,6 +21,7 @@ interface JobDetailsModalProperties {
 
 export const JobDetailsModal = ({ jobId }: JobDetailsModalProperties) => {
   const navigate = useNavigate();
+  const search = useSearch({ from: '/jobs' });
   const lastFocusedReference = useRef<HTMLElement | null>(null);
   const { data: job, isLoading, error } = useJobById(jobId);
 
@@ -39,7 +40,7 @@ export const JobDetailsModal = ({ jobId }: JobDetailsModalProperties) => {
   }, []);
 
   const handleClose = () => {
-    navigate({ to: '/jobs' });
+    navigate({ to: '/jobs', search });
   };
 
   const handleKeyDown = (_error: React.KeyboardEvent) => {
