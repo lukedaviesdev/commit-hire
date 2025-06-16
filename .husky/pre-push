@@ -4,5 +4,8 @@ npm run type-check || exit 1
 echo "🧪 Running full test suite..."
 npm run test|| exit 1
 
+echo "✨ Running prettier..."
+npm run format|| exit 1
+
 echo "🔍 Running lint..."
 npm run lint|| exit 1
