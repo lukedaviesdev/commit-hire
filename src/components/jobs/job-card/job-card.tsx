@@ -1,5 +1,12 @@
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { Bookmark, BookmarkCheck, MapPin, Briefcase } from 'lucide-react';
+import {
+  Bookmark,
+  BookmarkCheck,
+  MapPin,
+  Briefcase,
+  Wallet,
+  Laptop,
+} from 'lucide-react';
 
 import { TextHighlight } from '@/components/common/text-highlight/text-highlight';
 import { Button } from '@/components/ui/button';
@@ -28,6 +35,24 @@ export const JobCard = ({ job, searchHighlight = '' }: JobCardProperties) => {
   };
 
   const jobIsSaved = isSaved(job.id);
+
+  const formatSalary = (salaryRange?: {
+    min: number;
+    max: number;
+    currency?: string;
+  }) => {
+    if (!salaryRange) return null;
+
+    const { min, max, currency = 'USD' } = salaryRange;
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency,
+      notation: 'compact',
+      maximumFractionDigits: 0,
+    });
+
+    return `${formatter.format(min)} – ${formatter.format(max)} ${currency}`;
+  };
 
   return (
     <Card
@@ -78,12 +103,34 @@ export const JobCard = ({ job, searchHighlight = '' }: JobCardProperties) => {
             </span>
           ))}
         </div>
-        <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
-          <MapPin
-            className="h-4 w-4 text-muted-foreground"
-            aria-hidden="true"
-          />
-          {job.location}
+        <div className="mt-4 space-y-2">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <MapPin
+              className="h-4 w-4 text-muted-foreground"
+              aria-hidden="true"
+            />
+            {job.location}
+          </div>
+          {job.salaryRange && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Wallet
+                className="h-4 w-4 text-muted-foreground"
+                aria-hidden="true"
+              />
+              {formatSalary(job.salaryRange)}
+            </div>
+          )}
+          {job.remote && (
+            <div className="flex items-center gap-2">
+              <Laptop
+                className="h-4 w-4 text-muted-foreground"
+                aria-hidden="true"
+              />
+              <span className="bg-accent text-accent-foreground text-xs rounded px-2 py-0.5">
+                Remote
+              </span>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

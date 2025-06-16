@@ -7,6 +7,7 @@ export interface JobsSearch {
   tag?: string;
   location?: string;
   savedOnly?: boolean;
+  remoteOnly?: boolean;
 }
 
 export const Route = createFileRoute('/jobs')({
@@ -29,6 +30,11 @@ export const Route = createFileRoute('/jobs')({
     if (search.savedOnly !== undefined && search.savedOnly !== null) {
       result.savedOnly =
         search.savedOnly === 'true' || search.savedOnly === true;
+    }
+
+    if (search.remoteOnly !== undefined && search.remoteOnly !== null) {
+      result.remoteOnly =
+        search.remoteOnly === 'true' || search.remoteOnly === true;
     }
 
     return result;

@@ -44,6 +44,13 @@ export const useFilteredJobs = (
         return false;
       }
 
+      // Remote only filter
+      if (filters.remoteOnly) {
+        if (job.remote !== true) {
+          return false;
+        }
+      }
+
       return true;
     });
   }, [jobs, filters, savedIds]);

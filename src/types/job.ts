@@ -6,4 +6,10 @@ export interface Job {
   description: string;
   tags: string[];
   applyUrl: string;
+  salaryRange?: {
+    min: number;
+    max: number;
+    currency?: string;
+  };
+  remote?: boolean;
 }

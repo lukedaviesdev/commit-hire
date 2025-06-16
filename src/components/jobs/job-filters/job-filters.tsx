@@ -1,4 +1,4 @@
-import { Search, MapPin, Tag } from 'lucide-react';
+import { Search, MapPin, Tag, Laptop } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -33,6 +33,7 @@ export interface JobFilters {
   tag: string;
   location: string;
   savedOnly: boolean;
+  remoteOnly: boolean;
 }
 
 export const JobFilters = ({
@@ -53,7 +54,8 @@ export const JobFilters = ({
       formValues.search !== currentFilters.search ||
       formValues.tag !== currentFilters.tag ||
       formValues.location !== currentFilters.location ||
-      formValues.savedOnly !== currentFilters.savedOnly;
+      formValues.savedOnly !== currentFilters.savedOnly ||
+      formValues.remoteOnly !== currentFilters.remoteOnly;
 
     if (hasChanged) {
       onFiltersChange(formValues);
@@ -82,6 +84,7 @@ export const JobFilters = ({
       tag: 'all',
       location: 'all',
       savedOnly: false,
+      remoteOnly: false,
     };
     form.reset(clearedFilters);
     onFiltersChange(clearedFilters);
@@ -176,29 +179,59 @@ export const JobFilters = ({
           />
         </div>
 
-        <FormField
-          control={form.control}
-          name="savedOnly"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel className="text-sm font-normal">
-                  Show saved jobs only
-                </FormLabel>
-              </div>
-            </FormItem>
-          )}
-        />
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="savedOnly"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel className="text-sm font-normal">
+                    Show saved jobs only
+                  </FormLabel>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="remoteOnly"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    id="remoteOnly"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel
+                    htmlFor="remoteOnly"
+                    className="text-sm font-normal flex items-center gap-2"
+                  >
+                    <Laptop
+                      className="h-3 w-3 text-muted-foreground"
+                      aria-hidden="true"
+                    />
+                    Remote only
+                  </FormLabel>
+                </div>
+              </FormItem>
+            )}
+          />
+        </div>
 
         <div className="flex justify-end">
           <Button variant="outline" onClick={handleClearFilters}>
-            Clear Filters
+            Clear filters
           </Button>
         </div>
       </form>

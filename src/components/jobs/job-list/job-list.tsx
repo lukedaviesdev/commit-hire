@@ -22,6 +22,7 @@ export const JobList = () => {
     tag: search?.tag || 'all',
     location: search?.location || 'all',
     savedOnly: search?.savedOnly || false,
+    remoteOnly: search?.remoteOnly || false,
   };
 
   const filteredJobs = useFilteredJobs(jobs || [], currentFilters, savedIds);
@@ -44,6 +45,10 @@ export const JobList = () => {
 
     if (newFilters.savedOnly) {
       searchParameters.savedOnly = newFilters.savedOnly;
+    }
+
+    if (newFilters.remoteOnly) {
+      searchParameters.remoteOnly = newFilters.remoteOnly;
     }
 
     navigate({
