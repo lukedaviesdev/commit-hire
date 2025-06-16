@@ -1,0 +1,143 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# TanStack Router Configuration
+
+## Error Handling
+
+### Not Found Errors
+- Always configure a `notFoundComponent` at the root route level
+- Consider adding `notFoundComponent` to specific routes for custom error handling
+- Use the `notFound` utility in loaders for missing resources
+- Follow proper error propagation patterns
+
+### Implementation
+```typescript
+// Root route configuration
+export const Route = createRootRoute({
+  notFoundComponent: () => {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center">
+        <h1 className="text-2xl font-bold">Page Not Found</h1>
+        <p className="mt-2 text-muted-foreground">
+          The page you're looking for doesn't exist.
+        </p>
+        <Link
+          to="/"
+          className="mt-4 text-primary hover:underline"
+        >
+          Return Home
+        </Link>
+      </div>
+    )
+  }
+})
+
+// Route-specific not found handling
+export const Route = createFileRoute('/posts/$postId')({
+  loader: async ({ params: { postId } }) => {
+    const post = await getPost(postId)
+    if (!post) {
+      throw notFound({
+        // Optional: Pass data to notFoundComponent
+        data: { attemptedId: postId }
+      })
+    }
+    return { post }
+  },
+  notFoundComponent: ({ data }) => {
+    const { postId } = Route.useParams()
+    return (
+      <div className="p-4">
+        <h2 className="text-xl font-semibold">Post Not Found</h2>
+        <p className="mt-2">
+          Could not find post with ID: {postId}
+        </p>
+        <Link
+          to="/posts"
+          className="mt-4 text-primary hover:underline"
+        >
+          View All Posts
+        </Link>
+      </div>
+    )
+  }
+})
+```
+
+### Best Practices
+1. Error Handling:
+   - Always provide meaningful error messages
+   - Include navigation options in error states
+   - Use consistent error UI patterns
+   - Handle both route and resource not found cases
+
+2. Performance:
+   - Throw not-found errors in loaders instead of components
+   - Use proper error boundaries
+   - Implement proper loading states
+   - Consider error state caching
+
+3. User Experience:
+   - Provide clear error messages
+   - Include helpful navigation options
+   - Maintain consistent UI patterns
+   - Consider accessibility in error states
+
+4. Implementation:
+   - Use TypeScript for type safety
+   - Follow proper error propagation
+   - Implement proper error boundaries
+   - Use consistent error handling patterns
+
+## Router Configuration
+
+### Basic Setup
+```typescript
+const router = createRouter({
+  routeTree,
+  defaultNotFoundComponent: () => {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center">
+        <h1 className="text-2xl font-bold">Page Not Found</h1>
+        <p className="mt-2 text-muted-foreground">
+          The page you're looking for doesn't exist.
+        </p>
+        <Link
+          to="/"
+          className="mt-4 text-primary hover:underline"
+        >
+          Return Home
+        </Link>
+      </div>
+    )
+  }
+})
+```
+
+### Best Practices
+1. Configuration:
+   - Always configure a default not found component
+   - Use proper route organization
+   - Implement proper error boundaries
+   - Follow consistent patterns
+
+2. Performance:
+   - Use proper route splitting
+   - Implement proper loading states
+   - Consider route preloading
+   - Optimize route matching
+
+3. User Experience:
+   - Provide clear navigation
+   - Implement proper loading states
+   - Use consistent UI patterns
+   - Consider accessibility
+
+4. Implementation:
+   - Use TypeScript for type safety
+   - Follow proper route organization
+   - Implement proper error handling
+   - Use consistent patterns

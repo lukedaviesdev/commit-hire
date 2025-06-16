@@ -22,9 +22,11 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^4.0.0",
+    "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-select": "^2.1.6",
-    "@radix-ui/react-slot": "^1.1.2",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-visually-hidden": "^1.2.3",
     "@tanstack/react-query": "^5.80.7",
     "@tanstack/react-router": "^1.99.13",
     "@types/react-syntax-highlighter": "^15.5.13",
@@ -47,7 +49,7 @@
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "@tailwindcss/typography": "^0.5.16",
-    "@tanstack/router-devtools": "^1.99.13",
+    "@tanstack/react-router-devtools": "^1.121.16",
     "@tanstack/router-plugin": "^1.99.14",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^14.2.1",

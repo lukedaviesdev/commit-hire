@@ -8,131 +8,139 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as MotionRouteImport } from './routes/motion'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as DataRouteImport } from './routes/data'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as JobsJobIdRouteImport } from './routes/jobs.$jobId'
 
-import { Route as rootRoute } from './routes/__root';
-import { Route as MotionImport } from './routes/motion';
-import { Route as LoginImport } from './routes/login';
-import { Route as DataImport } from './routes/data';
-import { Route as AboutImport } from './routes/about';
-import { Route as IndexImport } from './routes/index';
-
-// Create/Update Routes
-
-const MotionRoute = MotionImport.update({
+const MotionRoute = MotionRouteImport.update({
   id: '/motion',
   path: '/motion',
-  getParentRoute: () => rootRoute,
-} as any);
-
-const LoginRoute = LoginImport.update({
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRoute,
-} as any);
-
-const DataRoute = DataImport.update({
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DataRoute = DataRouteImport.update({
   id: '/data',
   path: '/data',
-  getParentRoute: () => rootRoute,
-} as any);
-
-const AboutRoute = AboutImport.update({
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRoute,
-} as any);
-
-const IndexRoute = IndexImport.update({
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
-} as any);
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobsJobIdRoute = JobsJobIdRouteImport.update({
+  id: '/jobs/$jobId',
+  path: '/jobs/$jobId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/data': typeof DataRoute
+  '/login': typeof LoginRoute
+  '/motion': typeof MotionRoute
+  '/jobs/$jobId': typeof JobsJobIdRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/data': typeof DataRoute
+  '/login': typeof LoginRoute
+  '/motion': typeof MotionRoute
+  '/jobs/$jobId': typeof JobsJobIdRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/data': typeof DataRoute
+  '/login': typeof LoginRoute
+  '/motion': typeof MotionRoute
+  '/jobs/$jobId': typeof JobsJobIdRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/about' | '/data' | '/login' | '/motion' | '/jobs/$jobId'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/about' | '/data' | '/login' | '/motion' | '/jobs/$jobId'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/data'
+    | '/login'
+    | '/motion'
+    | '/jobs/$jobId'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  DataRoute: typeof DataRoute
+  LoginRoute: typeof LoginRoute
+  MotionRoute: typeof MotionRoute
+  JobsJobIdRoute: typeof JobsJobIdRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/';
-      path: '/';
-      fullPath: '/';
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    '/about': {
-      id: '/about';
-      path: '/about';
-      fullPath: '/about';
-      preLoaderRoute: typeof AboutImport;
-      parentRoute: typeof rootRoute;
-    };
-    '/data': {
-      id: '/data';
-      path: '/data';
-      fullPath: '/data';
-      preLoaderRoute: typeof DataImport;
-      parentRoute: typeof rootRoute;
-    };
-    '/login': {
-      id: '/login';
-      path: '/login';
-      fullPath: '/login';
-      preLoaderRoute: typeof LoginImport;
-      parentRoute: typeof rootRoute;
-    };
     '/motion': {
-      id: '/motion';
-      path: '/motion';
-      fullPath: '/motion';
-      preLoaderRoute: typeof MotionImport;
-      parentRoute: typeof rootRoute;
-    };
+      id: '/motion'
+      path: '/motion'
+      fullPath: '/motion'
+      preLoaderRoute: typeof MotionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/data': {
+      id: '/data'
+      path: '/data'
+      fullPath: '/data'
+      preLoaderRoute: typeof DataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jobs/$jobId': {
+      id: '/jobs/$jobId'
+      path: '/jobs/$jobId'
+      fullPath: '/jobs/$jobId'
+      preLoaderRoute: typeof JobsJobIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
-}
-
-// Create and export the route tree
-
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute;
-  '/about': typeof AboutRoute;
-  '/data': typeof DataRoute;
-  '/login': typeof LoginRoute;
-  '/motion': typeof MotionRoute;
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute;
-  '/about': typeof AboutRoute;
-  '/data': typeof DataRoute;
-  '/login': typeof LoginRoute;
-  '/motion': typeof MotionRoute;
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  '/': typeof IndexRoute;
-  '/about': typeof AboutRoute;
-  '/data': typeof DataRoute;
-  '/login': typeof LoginRoute;
-  '/motion': typeof MotionRoute;
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: '/' | '/about' | '/data' | '/login' | '/motion';
-  fileRoutesByTo: FileRoutesByTo;
-  to: '/' | '/about' | '/data' | '/login' | '/motion';
-  id: '__root__' | '/' | '/about' | '/data' | '/login' | '/motion';
-  fileRoutesById: FileRoutesById;
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AboutRoute: typeof AboutRoute;
-  DataRoute: typeof DataRoute;
-  LoginRoute: typeof LoginRoute;
-  MotionRoute: typeof MotionRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -141,40 +149,8 @@ const rootRouteChildren: RootRouteChildren = {
   DataRoute: DataRoute,
   LoginRoute: LoginRoute,
   MotionRoute: MotionRoute,
-};
-
-export const routeTree = rootRoute
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/about",
-        "/data",
-        "/login",
-        "/motion"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/about": {
-      "filePath": "about.tsx"
-    },
-    "/data": {
-      "filePath": "data.tsx"
-    },
-    "/login": {
-      "filePath": "login.tsx"
-    },
-    "/motion": {
-      "filePath": "motion.tsx"
-    }
-  }
+  JobsJobIdRoute: JobsJobIdRoute,
 }
-ROUTE_MANIFEST_END */
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()

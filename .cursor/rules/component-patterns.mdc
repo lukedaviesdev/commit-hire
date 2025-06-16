@@ -1,0 +1,919 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# React Component Patterns
+
+## Package Dependencies
+- Motion is available via `motion` package (v12.4.1)
+- Import Motion components from 'motion/react'
+- No need to install additional animation libraries
+- Use existing dependencies for animations and transitions
+- Follow package version constraints
+
+## Component Structure
+- Use functional components with TypeScript
+- Follow single responsibility principle
+- Keep components focused and small
+- Use proper folder structure
+- Follow consistent naming conventions
+- Leverage shadcn components where possible
+- Add smooth transitions and animations where appropriate
+
+## Animation Patterns
+- Use Motion for animations and transitions
+- Follow consistent animation patterns
+- Keep animations subtle and purposeful
+- Use layout animations for smooth transitions
+- Implement proper loading states
+
+### Motion Usage
+```typescript
+// Good: Using Motion for list animations
+import { motion, AnimatePresence } from 'motion/react';
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+};
+
+export function List({ items }) {
+  return (
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
+      <AnimatePresence mode="popLayout">
+        {items.map(item => (
+          <motion.div key={item.id} variants={item} layout>
+            <Item {...item} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+// Avoid: Custom animation solutions
+export function List({ items }) {
+  return (
+    <div className="animate-fade-in">
+      {items.map(item => (
+        <div key={item.id} className="animate-slide-up">
+          <Item {...item} />
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### Animation Best Practices
+1. Performance:
+   - Use `layout` prop for smooth layout transitions
+   - Use `AnimatePresence` for exit animations
+   - Use `willChange` for performance-critical animations
+   - Keep animations GPU-accelerated
+
+2. User Experience:
+   - Keep animations subtle and purposeful
+   - Use consistent timing and easing
+   - Provide loading states
+   - Consider reduced motion preferences
+
+3. Implementation:
+   - Define animation variants at component level
+   - Use semantic animation names
+   - Keep animation logic separate from business logic
+   - Test animations across devices
+
+## Folder Structure
+```
+src/
+  components/
+    ui/           # shadcn components only
+    common/       # shared custom components
+      spinner/
+        spinner.tsx
+        spinner.test.tsx
+        spinner.stories.tsx
+    feature/      # feature-specific components
+      jobs/
+        job-card/
+          job-card.tsx
+          job-card.test.tsx
+          job-card.stories.tsx
+        job-list/
+          job-list.tsx
+          job-list.test.tsx
+          job-list.stories.tsx
+```
+
+## Naming Conventions
+- Use lowercase with hyphens for all component files and folders
+  - ✅ `job-card/job-card.tsx`
+  - ✅ `job-list/job-list.tsx`
+  - ❌ `JobCard.tsx`
+  - ❌ `jobCard.tsx`
+- Use PascalCase for component names in code
+  - ✅ `export function JobCard()`
+  - ❌ `export function job-card()`
+- Use descriptive, feature-based folder names
+  - ✅ `components/jobs/job-card/`
+  - ✅ `components/auth/login-form/`
+  - ❌ `components/JobCard/`
+  - ❌ `components/jobCard/`
+
+## shadcn Usage
+- Use shadcn components as building blocks
+- Follow shadcn composition patterns
+- Use proper component variants
+- Leverage built-in animations and transitions
+- Use semantic color tokens
+
+### Installation
+```bash
+# Install shadcn CLI
+npx shadcn@latest init
+
+# Add components
+npx shadcn@latest add card
+npx shadcn@latest add badge
+npx shadcn@latest add alert
+```
+
+## Component Organization
+- Each component should have its own folder
+- Include related files in the component folder:
+  - Component file (`component-name.tsx`)
+  - Test file (`component-name.test.tsx`)
+  - Stories file (`component-name.stories.tsx`)
+  - Index file (`index.ts`)
+- Co-locate related components in feature folders
+
+## Best Practices
+1. File Organization:
+   - Keep one component per file
+   - Use index files for clean exports
+   - Group related components in feature folders
+   - Follow consistent folder structure
+
+2. Component Structure:
+   - Use TypeScript interfaces for props
+   - Keep components focused and small
+   - Use proper prop types
+   - Implement proper error boundaries
+   - Use shadcn components when available
+   - Add smooth transitions where appropriate
+
+3. Styling:
+   - Use Tailwind CSS for styling
+   - Use shadcn semantic color tokens
+   - Follow BEM-like class naming
+   - Keep styles scoped to components
+   - Use CSS variables for theming
+
+4. Performance:
+   - Use React.memo when needed
+   - Implement proper key props
+   - Avoid unnecessary re-renders
+   - Use proper state management
+   - Optimize animations for performance
+
+5. Testing:
+   - Write unit tests for components
+   - Test user interactions
+   - Test error states
+   - Test accessibility
+   - Test animations and transitions
+
+## Component Example
+```typescript
+// src/components/jobs/job-card/job-card.tsx
+import { Job } from '../../../lib/api';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+
+interface JobCardProps {
+  job: Job;
+  onApply?: (jobId: string) => void;
+}
+
+export function JobCard({ job, onApply }: JobCardProps) {
+  return (
+    <Card className="hover:shadow-md transition-shadow">
+      <CardHeader>
+        <CardTitle>{job.title}</CardTitle>
+        <p className="text-muted-foreground">{job.company}</p>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-wrap gap-2">
+          {job.tags.map((tag) => (
+            <Badge key={tag} variant="secondary">
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+When working with React components:
+
+1. Component Structure:
+   - Use functional components with TypeScript
+   - Place props interface at the top of the file
+   - Use named exports
+   - Follow the pattern: imports → types → component → exports
+
+2. Styling:
+   - Use Tailwind CSS for styling
+   - Follow the pattern: className="[base styles] [state styles] [responsive styles]"
+   - Use the cn() utility for conditional classes
+
+3. Props:
+   - Use TypeScript interfaces for props
+   - Destructure props in the function parameters
+   - Use default values when appropriate
+   - Document complex props with JSDoc
+
+4. State Management:
+   - Use React Query for server state
+   - Use useState for simple local state
+   - Use useReducer for complex state logic
+   - Keep state as close as possible to where it's used
+
+5. Performance:
+   - Memoize expensive calculations with useMemo
+   - Memoize callbacks with useCallback
+   - Use React.memo for expensive renders
+   - Implement proper cleanup in useEffect
+
+Example component structure:
+```tsx
+import { type FC } from 'react';
+import { cn } from '@/lib/utils';
+
+interface ComponentProps {
+  title: string;
+  className?: string;
+}
+
+export const Component: FC<ComponentProps> = ({
+  title,
+  className
+}) => {
+  return (
+    <div className={cn('base-styles', className)}>
+      {title}
+    </div>
+  );
+};
+
+```
+
+## Component Rules
+
+1. **File Structure**
+   - Each component should have its own directory
+   - Include test and story files
+   - Use TypeScript for type safety
+   - Follow the naming convention: `component-name.tsx`
+
+2. **Component Structure**
+   - Use functional components with TypeScript
+   - Define props interface with `ComponentNameProperties`
+   - Use proper type annotations
+   - Include JSDoc comments for complex components
+
+3. **Styling**
+   - Use Tailwind CSS for styling
+   - Follow the design system tokens
+   - Use the `cn` utility for conditional classes
+   - Maintain consistent spacing and sizing
+
+4. **Accessibility**
+   - Include proper ARIA attributes
+   - Ensure keyboard navigation
+   - Add proper roles and labels
+   - Test with screen readers
+
+5. **Testing**
+   - Write unit tests for all components
+   - Test accessibility
+   - Test edge cases
+   - Use React Testing Library
+
+6. **Documentation**
+   - Include Storybook stories
+   - Document props and usage
+   - Add examples
+   - Include accessibility information
+
+## Package Dependencies
+
+1. **shadcn**
+   - Installation: `npx shadcn@latest init`
+   - Adding components: `npx shadcn@latest add [component-name]`
+   - Components are added to `/components/ui`
+   - Follow shadcn's documentation for usage
+
+2. **Motion**
+   - Package: `motion`
+   - Import from `motion/react`
+   - Use for animations and transitions
+   - Follow Motion documentation for best practices
+
+## Best Practices
+
+1. **Component Composition**
+   - Keep components small and focused
+   - Use composition over inheritance
+   - Follow the single responsibility principle
+   - Reuse common components
+
+2. **State Management**
+   - Use React hooks for local state
+   - Keep state as close as possible to where it's used
+   - Use context for global state
+   - Follow the container/presenter pattern
+
+3. **Performance**
+   - Use React.memo when appropriate
+   - Implement proper loading states
+   - Optimize re-renders
+   - Use proper key props
+
+4. **Error Handling**
+   - Implement error boundaries
+   - Show user-friendly error messages
+   - Log errors appropriately
+   - Handle edge cases
+
+## Examples
+
+### Good Component Structure
+
+```tsx
+// src/components/common/spinner/spinner.tsx
+import { cn } from '@/lib/utils';
+
+interface SpinnerProperties {
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}
+
+const sizeClasses = {
+  sm: 'h-4 w-4',
+  md: 'h-6 w-6',
+  lg: 'h-8 w-8',
+};
+
+export const Spinner = ({ size = 'md', className }: SpinnerProperties) => {
+  return (
+    <div
+      className={cn(
+        'animate-spin rounded-full border-2 border-current border-t-transparent text-primary',
+        sizeClasses[size],
+        className,
+      )}
+      role="status"
+      aria-label="Loading"
+    >
+      <span className="sr-only">Loading...</span>
+    </div>
+  );
+};
+```
+
+### Good Component Usage
+
+```tsx
+// src/components/jobs/job-list/job-list.tsx
+import { Spinner } from '@/components/common/spinner/spinner';
+
+export const JobList = () => {
+  const { data: jobs, isLoading } = useJobs();
+
+  if (isLoading) {
+    return <Spinner size="lg" />;
+  }
+
+  return (
+    <div className="space-y-4">
+      {jobs.map((job) => (
+        <JobCard key={job.id} job={job} />
+      ))}
+    </div>
+  );
+};
+```
+
+### Bad Component Structure
+
+```tsx
+// ❌ Don't put custom components in /ui
+// src/components/ui/spinner.tsx
+export const Spinner = () => {
+  return <div className="spinner" />;
+};
+
+// ❌ Don't skip TypeScript
+// src/components/jobs/job-list.tsx
+export const JobList = (props) => {
+  return <div>{props.jobs.map(job => <JobCard job={job} />)}</div>;
+};
+
+// ❌ Don't skip accessibility
+// src/components/jobs/job-card.tsx
+export const JobCard = ({ job }) => {
+  return <div onClick={() => handleClick(job)}>{job.title}</div>;
+};
+```
+
+## Animation Patterns
+
+1. **Motion Usage**
+   - Import from `motion/react`
+   - Use for list animations and transitions
+   - Follow Motion documentation for best practices
+
+2. **Best Practices**
+   - Keep animations subtle and purposeful
+   - Consider reduced motion preferences
+   - Optimize performance
+   - Test on different devices
+
+3. **Implementation**
+   - Use AnimatePresence for mounting/unmounting
+   - Define variants for reusable animations
+   - Use proper transition timing
+   - Handle edge cases
+
+## Examples
+
+### Good Animation Usage
+
+```tsx
+import { motion, AnimatePresence } from 'motion/react';
+
+export const JobList = () => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <AnimatePresence mode="wait">
+        {jobs.map((job) => (
+          <motion.div
+            key={job.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+            <JobCard job={job} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+```
+
+### Bad Animation Usage
+
+```tsx
+// ❌ Don't use CSS animations directly
+// src/components/jobs/job-list.tsx
+import { JobCard } from '../job-card/job-card';
+
+export const JobList = () => {
+  return (
+    <div className="animate-fade">
+      {jobs.map(job => (
+        <div className="animate-slide">
+          <JobCard job={job} />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// ❌ Don't skip AnimatePresence
+// src/components/jobs/job-list.tsx
+import { JobCard } from '@/components/jobs/job-card/job-card';
+
+export const JobList = () => {
+  return (
+    <motion.div>
+      {jobs.map(job => (
+        <motion.div key={job.id}>
+          <JobCard job={job} />
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+};
+```
+
+## Router Patterns
+
+1. **Route Parameters**
+   ```tsx
+   // ✅ Good: Use useParams for route parameters
+   import { useParams } from '@tanstack/react-router';
+
+   export const JobList = () => {
+     const { jobId } = useParams({ from: '/jobs/$jobId' });
+     return jobId ? <JobDetailsModal jobId={jobId} /> : null;
+   };
+
+   // ❌ Bad: Don't use useMatch for parameters
+   import { useMatch } from '@tanstack/react-router';
+
+   export const JobList = () => {
+     const match = useMatch({ from: '/jobs/$jobId' });
+     return match.params.jobId ? <JobDetailsModal jobId={match.params.jobId} /> : null;
+   };
+   ```
+
+2. **Navigation**
+   ```tsx
+   // ✅ Good: Use useNavigate for navigation
+   import { useNavigate } from '@tanstack/react-router';
+
+   export const JobCard = () => {
+     const navigate = useNavigate();
+     return (
+       <Button onClick={() => navigate({ to: '/jobs/$jobId', params: { jobId } })}>
+         View Details
+       </Button>
+     );
+   };
+   ```
+
+3. **Route Matching**
+   ```tsx
+   // ✅ Good: Use useParams for parameter access
+   const { jobId } = useParams({ from: '/jobs/$jobId' });
+
+   // ❌ Bad: Don't use useMatch for parameter access
+   const match = useMatch({ from: '/jobs/$jobId' });
+   const jobId = match.params.jobId;
+   ```
+
+## Component Organization
+
+1. **UI Components (`/ui`)**
+   - Reserved exclusively for shadcn components
+   - Components are installed using `npx shadcn@latest add [component-name]`
+   - Do not create custom components in this directory
+   - Follow shadcn's component structure and styling
+
+2. **Common Components (`/common`)**
+   - Shared custom components used across multiple features
+   - Follow the component rules structure with test and story files
+   - Examples: Spinner, ErrorBoundary, Layout components
+   - Should be highly reusable and well-documented
+
+3. **Feature Components (`/feature`)**
+   - Feature-specific components
+   - Follow the component rules structure
+   - Should be co-located with related components
+   - Can use both shadcn and common components
+
+## Component Rules
+
+1. **File Structure**
+   - Each component should have its own directory
+   - Include test and story files
+   - Use TypeScript for type safety
+   - Follow the naming convention: `component-name.tsx`
+
+2. **Component Structure**
+   - Use functional components with TypeScript
+   - Define props interface with `ComponentNameProperties`
+   - Use proper type annotations
+   - Include JSDoc comments for complex components
+
+3. **Styling**
+   - Use Tailwind CSS for styling
+   - Follow the design system tokens
+   - Use the `cn` utility for conditional classes
+   - Maintain consistent spacing and sizing
+
+4. **Accessibility**
+   - Include proper ARIA attributes
+   - Ensure keyboard navigation
+   - Add proper roles and labels
+   - Test with screen readers
+
+5. **Testing**
+   - Write unit tests for all components
+   - Test accessibility
+   - Test edge cases
+   - Use React Testing Library
+
+6. **Documentation**
+   - Include Storybook stories
+   - Document props and usage
+   - Add examples
+   - Include accessibility information
+
+## Package Dependencies
+
+1. **shadcn**
+   - Installation: `npx shadcn@latest init`
+   - Adding components: `npx shadcn@latest add [component-name]`
+   - Components are added to `/components/ui`
+   - Follow shadcn's documentation for usage
+
+2. **Motion**
+   - Package: `motion`
+   - Import from `motion/react`
+   - Use for animations and transitions
+   - Follow Motion documentation for best practices
+
+## Best Practices
+
+1. **Component Composition**
+   - Keep components small and focused
+   - Use composition over inheritance
+   - Follow the single responsibility principle
+   - Reuse common components
+
+2. **State Management**
+   - Use React hooks for local state
+   - Keep state as close as possible to where it's used
+   - Use context for global state
+   - Follow the container/presenter pattern
+
+3. **Performance**
+   - Use React.memo when appropriate
+   - Implement proper loading states
+   - Optimize re-renders
+   - Use proper key props
+
+4. **Error Handling**
+   - Implement error boundaries
+   - Show user-friendly error messages
+   - Log errors appropriately
+   - Handle edge cases
+
+## Examples
+
+### Good Component Structure
+
+```tsx
+// src/components/common/spinner/spinner.tsx
+import { cn } from '@/lib/utils';
+
+interface SpinnerProperties {
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}
+
+const sizeClasses = {
+  sm: 'h-4 w-4',
+  md: 'h-6 w-6',
+  lg: 'h-8 w-8',
+};
+
+export const Spinner = ({ size = 'md', className }: SpinnerProperties) => {
+  return (
+    <div
+      className={cn(
+        'animate-spin rounded-full border-2 border-current border-t-transparent text-primary',
+        sizeClasses[size],
+        className,
+      )}
+      role="status"
+      aria-label="Loading"
+    >
+      <span className="sr-only">Loading...</span>
+    </div>
+  );
+};
+```
+
+### Good Component Usage
+
+```tsx
+// src/components/jobs/job-list/job-list.tsx
+import { useParams } from '@tanstack/react-router';
+import { AnimatePresence } from 'motion/react';
+
+import { MotionWrapper } from '@/components/common/motion-wrapper/motion-wrapper';
+import { Spinner } from '@/components/common/spinner/spinner';
+import { JobCard } from '@/components/jobs/job-card/job-card';
+import { JobDetailsModal } from '@/components/jobs/job-details-modal/job-details-modal';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useJobs } from '@/hooks/useJobs';
+
+export const JobList = () => {
+  const { jobId } = useParams({ from: '/jobs/$jobId' });
+  const { data: jobs, isLoading, error } = useJobs();
+
+  if (isLoading) {
+    return (
+      <MotionWrapper className="flex min-h-[200px] items-center justify-center">
+        <Spinner size="lg" />
+      </MotionWrapper>
+    );
+  }
+
+  return (
+    <MotionWrapper className="space-y-4">
+      <AnimatePresence mode="wait">
+        {jobId && <JobDetailsModal jobId={jobId} />}
+      </AnimatePresence>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {jobs.map((job) => (
+          <MotionWrapper key={job.id} type="slide" delay={0.1}>
+            <JobCard job={job} />
+          </MotionWrapper>
+        ))}
+      </div>
+    </MotionWrapper>
+  );
+};
+```
+
+### Bad Component Structure
+
+```tsx
+// ❌ Don't use relative imports
+// src/components/jobs/job-list/job-list.tsx
+import { Spinner } from '../../common/spinner/spinner';
+import { JobCard } from '../job-card/job-card';
+
+// ❌ Don't mix import styles
+// src/components/jobs/job-list/job-list.tsx
+import { Spinner } from '@/components/common/spinner/spinner';
+import { JobCard } from '../job-card/job-card';
+
+// ❌ Don't skip import grouping
+// src/components/jobs/job-list/job-list.tsx
+import { useJobs } from '@/hooks/useJobs';
+import { Spinner } from '@/components/common/spinner/spinner';
+import { useParams } from '@tanstack/react-router';
+import { JobCard } from '@/components/jobs/job-card/job-card';
+```
+
+## Animation Patterns
+
+1. **Motion Usage**
+   - Import from `motion/react`
+   - Use for list animations and transitions
+   - Follow Motion documentation for best practices
+
+2. **Best Practices**
+   - Keep animations subtle and purposeful
+   - Consider reduced motion preferences
+   - Optimize performance
+   - Test on different devices
+
+3. **Implementation**
+   - Use AnimatePresence for mounting/unmounting
+   - Define variants for reusable animations
+   - Use proper transition timing
+   - Handle edge cases
+
+## Examples
+
+### Good Animation Usage
+
+```tsx
+import { useParams } from '@tanstack/react-router';
+import { AnimatePresence } from 'motion/react';
+
+import { MotionWrapper } from '@/components/common/motion-wrapper/motion-wrapper';
+import { JobCard } from '@/components/jobs/job-card/job-card';
+import { useJobs } from '@/hooks/useJobs';
+
+export const JobList = () => {
+  return (
+    <MotionWrapper className="space-y-4">
+      <AnimatePresence mode="wait">
+        {jobs.map((job) => (
+          <MotionWrapper
+            key={job.id}
+            type="slide"
+            delay={0.1}
+          >
+            <JobCard job={job} />
+          </MotionWrapper>
+        ))}
+      </AnimatePresence>
+    </MotionWrapper>
+  );
+};
+```
+
+### Bad Animation Usage
+
+```tsx
+// ❌ Don't use CSS animations directly
+// src/components/jobs/job-list.tsx
+import { JobCard } from '../job-card/job-card';
+
+export const JobList = () => {
+  return (
+    <div className="animate-fade">
+      {jobs.map(job => (
+        <div className="animate-slide">
+          <JobCard job={job} />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// ❌ Don't skip AnimatePresence
+// src/components/jobs/job-list.tsx
+import { JobCard } from '@/components/jobs/job-card/job-card';
+
+export const JobList = () => {
+  return (
+    <motion.div>
+      {jobs.map(job => (
+        <motion.div key={job.id}>
+          <JobCard job={job} />
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+};
+```
+
+## Component Breakdown Guidelines
+
+### When to Break Down Components
+1. **Size Thresholds**:
+   - Components exceeding 150 lines of code
+   - Components with more than 3-4 distinct UI sections
+   - Components handling multiple responsibilities
+
+2. **Logical Separation**:
+   - UI sections that represent distinct features
+   - Reusable UI patterns within the component
+   - State management logic that can be isolated
+
+3. **Performance Considerations**:
+   - Heavy computations or data transformations
+   - Complex animations or transitions
+   - Large lists or data grids
+
+### Sub-Component Organization
+1. **File Structure**:
+   ```
+   component-name/
+   ├── component-name.tsx        # Main component
+   ├── component-name-content.tsx # Content sub-component
+   ├── component-name-header.tsx  # Header sub-component
+   └── component-name-footer.tsx  # Footer sub-component
+   ```
+
+2. **Naming Conventions**:
+   - Sub-components should be prefixed with the parent component name
+   - Use descriptive suffixes (-content, -header, -footer, etc.)
+   - Keep related components in the same directory
+
+3. **Props Interface**:
+   - Each sub-component should have its own interface
+   - Props should be specific to the sub-component's responsibility
+   - Use clear, descriptive prop names
+
+### Best Practices
+1. **Component Creation Checklist**:
+   - [ ] Assess component size and complexity
+   - [ ] Identify distinct UI sections
+   - [ ] Consider performance implications
+   - [ ] Plan component hierarchy
+   - [ ] Document component relationships
+
+2. **Refactoring Guidelines**:
+   - Extract reusable logic into custom hooks
+   - Move complex UI sections to sub-components
+   - Keep state management at appropriate levels
+   - Maintain clear component boundaries
+
+3. **Documentation Requirements**:
+   - Document component relationships
+   - Explain prop interfaces
+   - Note any performance considerations
+   - Include usage examples

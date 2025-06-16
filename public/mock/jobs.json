@@ -1,0 +1,49 @@
+{
+  "jobs": [
+    {
+      "id": "job-1",
+      "title": "Senior Frontend Developer",
+      "company": "TechCorp",
+      "location": "San Francisco, CA (Remote)",
+      "description": "We're looking for a Senior Frontend Developer to join our team and help build the next generation of web applications.",
+      "tags": ["React", "TypeScript", "Tailwind", "Remote"],
+      "applyUrl": "https://techcorp.com/careers/senior-frontend"
+    },
+    {
+      "id": "job-2",
+      "title": "Full Stack Engineer",
+      "company": "StartupX",
+      "location": "New York, NY",
+      "description": "Join our fast-growing startup as a Full Stack Engineer and help shape our product from the ground up.",
+      "tags": ["Node.js", "React", "PostgreSQL", "AWS"],
+      "applyUrl": "https://startupx.com/jobs/full-stack"
+    },
+    {
+      "id": "job-3",
+      "title": "Frontend Developer",
+      "company": "DesignCo",
+      "location": "London, UK (Hybrid)",
+      "description": "We're seeking a Frontend Developer with a keen eye for design and a passion for creating beautiful user interfaces.",
+      "tags": ["Vue.js", "CSS", "Design Systems", "Hybrid"],
+      "applyUrl": "https://designco.com/careers/frontend"
+    },
+    {
+      "id": "job-4",
+      "title": "React Developer",
+      "company": "FinTech Solutions",
+      "location": "Remote",
+      "description": "Join our fintech team to build secure and performant financial applications using React and TypeScript.",
+      "tags": ["React", "TypeScript", "Finance", "Remote"],
+      "applyUrl": "https://fintech-solutions.com/jobs/react"
+    },
+    {
+      "id": "job-5",
+      "title": "UI/UX Developer",
+      "company": "Creative Labs",
+      "location": "Berlin, Germany",
+      "description": "We're looking for a UI/UX Developer who can bridge the gap between design and development.",
+      "tags": ["React", "Framer Motion", "Design", "UI/UX"],
+      "applyUrl": "https://creativelabs.com/careers/ui-ux"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+Project Structure Guidelines:
+
+1. Directory Organization:
+   - /src
+     - /components: Reusable UI components
+     - /hooks: Custom React hooks
+     - /lib: Utility functions and shared logic
+     - /pages: Page components
+     - /routes: Route definitions
+     - /test: Test utilities and setup
+     - /utils: Helper functions
+     - /assets: Static assets
+
+2. File Naming:
+   - Use kebab-case for file names
+   - Use PascalCase for component files
+   - Use camelCase for utility files
+   - Add .test.ts(x) suffix for test files
+
+3. Import Order:
+   1. External dependencies
+   2. Internal absolute imports (@/...)
+   3. Relative imports
+   4. Types and interfaces
+   5. Styles
+
+4. Code Organization:
+   - Keep files focused and single-responsibility
+   - Co-locate related files (component + test + styles)
+   - Use index files for clean exports
+   - Document complex logic with comments
+
+5. TypeScript:
+   - Use strict mode
+   - Prefer interfaces for public APIs
+   - Use type for internal types
+   - Export types from index files
+
+Example file structure:
+```
+src/
+  components/
+    button/
+      button.tsx
+      button.test.tsx
+      button.styles.ts
+      index.ts
+  hooks/
+    use-local-storage/
+      use-local-storage.ts
+      use-local-storage.test.ts
+      index.ts
+  lib/
+    utils.ts
+  pages/
+    home/
+      home.tsx
+      home.test.tsx
+  routes/
+    __root.tsx
+  test/
+    setup.ts
+    test-utils.tsx
+  utils/
+    storage/
+      storage.ts
+      storage.test.ts
