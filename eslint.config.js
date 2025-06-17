@@ -13,7 +13,7 @@ import tseslint from 'typescript-eslint';
 export default [
   {
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
-    ignores: ['**/.prettierrc.cjs'],
+    ignores: ['**/.prettierrc.cjs', 'dist/**/*'],
     languageOptions: {
       globals: {
         ...globals.browser,
