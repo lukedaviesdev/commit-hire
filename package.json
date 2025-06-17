@@ -94,8 +94,8 @@
     "vitest": "^3.0.5"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --cache --max-warnings=0",
       "prettier --write",
       "vitest related --run"
     ],
